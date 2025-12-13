@@ -1,0 +1,138 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8y3n5k2p9m7x"]
+
+[ext_resource type="Script" path="res://game/scripts/menus/options_menu.gd" id="1_options"]
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_options")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.15, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "OPTIONS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer1" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="MasterVolumeContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/MasterVolumeContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Master Volume:"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="VBoxContainer/MasterVolumeContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/MasterVolumeContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "100%"
+vertical_alignment = 1
+
+[node name="MusicVolumeContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/MusicVolumeContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Music Volume:"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="VBoxContainer/MusicVolumeContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+max_value = 100.0
+value = 80.0
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/MusicVolumeContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "80%"
+vertical_alignment = 1
+
+[node name="SFXVolumeContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/SFXVolumeContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "SFX Volume:"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="VBoxContainer/SFXVolumeContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+max_value = 100.0
+value = 90.0
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/SFXVolumeContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "90%"
+vertical_alignment = 1
+
+[node name="Spacer2" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "BACK"
+
+[node name="BackLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "ESC to go back"
+horizontal_alignment = 1

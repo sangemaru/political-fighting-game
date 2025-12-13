@@ -1,0 +1,140 @@
+[gd_scene load_steps=2 format=3 uid="uid://cw8x9j3k2m7qp"]
+
+[ext_resource type="Script" path="res://game/scripts/menus/character_select.gd" id="1_char_select"]
+
+[node name="CharacterSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_char_select")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.15, 0.2, 1)
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 80.0
+grow_horizontal = 2
+text = "SELECT YOUR CHARACTER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -150.0
+offset_right = 400.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 100
+
+[node name="P1Panel" type="Panel" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/P1Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="PlayerLabel" type="Label" parent="HBoxContainer/P1Panel/VBoxContainer"]
+layout_mode = 2
+text = "PLAYER 1"
+horizontal_alignment = 1
+
+[node name="CharacterSprite" type="Sprite2D" parent="HBoxContainer/P1Panel/VBoxContainer"]
+position = Vector2(150, 120)
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/P1Panel/VBoxContainer"]
+layout_mode = 2
+text = "Character Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ControlsLabel" type="Label" parent="HBoxContainer/P1Panel/VBoxContainer"]
+layout_mode = 2
+text = "A/D to change"
+horizontal_alignment = 1
+
+[node name="ReadyLabel" type="Label" parent="HBoxContainer/P1Panel/VBoxContainer"]
+layout_mode = 2
+text = "Select (SPACE)"
+horizontal_alignment = 1
+
+[node name="P2Panel" type="Panel" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/P2Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="PlayerLabel" type="Label" parent="HBoxContainer/P2Panel/VBoxContainer"]
+layout_mode = 2
+text = "PLAYER 2"
+horizontal_alignment = 1
+
+[node name="CharacterSprite" type="Sprite2D" parent="HBoxContainer/P2Panel/VBoxContainer"]
+position = Vector2(150, 120)
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/P2Panel/VBoxContainer"]
+layout_mode = 2
+text = "Character Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ControlsLabel" type="Label" parent="HBoxContainer/P2Panel/VBoxContainer"]
+layout_mode = 2
+text = "←/→ to change"
+horizontal_alignment = 1
+
+[node name="ReadyLabel" type="Label" parent="HBoxContainer/P2Panel/VBoxContainer"]
+layout_mode = 2
+text = "Select (ENTER)"
+horizontal_alignment = 1
+
+[node name="BackLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "ESC to go back"
+horizontal_alignment = 1
