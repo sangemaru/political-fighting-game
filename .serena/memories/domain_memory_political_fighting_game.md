@@ -4,7 +4,7 @@
     "name": "Political Fighting Game",
     "type": "greenfield",
     "created_at": "2025-12-13T00:00:00Z",
-    "last_updated": "2025-12-13T22:00:00Z",
+    "last_updated": "2025-12-13T23:20:00Z",
     "repository_path": "/home/blackthorne/Work/political-fighting-game",
     "primary_language": "gdscript",
     "test_framework": "gdunit4"
@@ -20,7 +20,7 @@
     {
       "id": "G2", 
       "description": "Web Deployment - HTML5 export, CI/CD, itch.io",
-      "status": "not_started",
+      "status": "in_progress",
       "success_criteria": "Game playable at itch.io URL",
       "features": ["F71-F85"]
     },
@@ -103,11 +103,11 @@
     {"id": "F68", "category": "training", "description": "Training mode scene", "status": "not_started", "priority": "medium"},
     {"id": "F69", "category": "training", "description": "Frame data display", "status": "not_started", "priority": "low"},
     {"id": "F70", "category": "training", "description": "Hitbox visualization", "status": "not_started", "priority": "low"},
-    {"id": "F71", "category": "deployment", "description": "HTML5 export template", "status": "not_started", "priority": "critical"},
-    {"id": "F72", "category": "deployment", "description": "Web build optimization", "status": "not_started", "priority": "high"},
-    {"id": "F73", "category": "deployment", "description": "itch.io page setup", "status": "not_started", "priority": "critical"},
-    {"id": "F74", "category": "deployment", "description": "GitHub Actions CI", "status": "not_started", "priority": "high"},
-    {"id": "F75", "category": "deployment", "description": "Automated web deployment", "status": "not_started", "priority": "high"},
+    {"id": "F71", "category": "deployment", "description": "HTML5 export template", "status": "passing", "priority": "critical", "git_commit": "89e6ea7"},
+    {"id": "F72", "category": "deployment", "description": "Web build optimization", "status": "passing", "priority": "high", "git_commit": "89e6ea7"},
+    {"id": "F73", "category": "deployment", "description": "itch.io page setup", "status": "passing", "priority": "critical", "git_commit": "89e6ea7"},
+    {"id": "F74", "category": "deployment", "description": "GitHub Actions CI", "status": "passing", "priority": "high", "git_commit": "89e6ea7"},
+    {"id": "F75", "category": "deployment", "description": "Automated web deployment", "status": "passing", "priority": "high", "git_commit": "89e6ea7"},
     {"id": "F76", "category": "deployment", "description": "Windows build", "status": "not_started", "priority": "medium"},
     {"id": "F77", "category": "deployment", "description": "Linux build", "status": "not_started", "priority": "medium"},
     {"id": "F78", "category": "deployment", "description": "macOS build", "status": "not_started", "priority": "low"},
@@ -128,11 +128,11 @@
   ],
   "progress": {
     "total_features": 92,
-    "passing": 55,
+    "passing": 60,
     "failing": 0,
     "in_progress": 0,
-    "not_started": 37,
-    "progress_percentage": 59.8
+    "not_started": 32,
+    "progress_percentage": 65.2
   },
   "session_log": [
     {
@@ -180,6 +180,12 @@
       "action": "batch_complete",
       "features_completed": ["F52", "F53", "F54", "F55"],
       "notes": "Polish features implemented: screen shake, hit particles, blocking mechanic with damage/knockback reduction, combo counter with timeout/reset. Commit dba3c27. Progress now 55/92 (59.8%)."
+    },
+    {
+      "timestamp": "2025-12-13T23:20:00Z",
+      "action": "batch_complete",
+      "features_completed": ["F71", "F72", "F73", "F74", "F75"],
+      "notes": "Web deployment pipeline implemented: export_presets.cfg for HTML5, web optimization docs, itch.io page setup, GitHub Actions CI with multi-platform builds, automated deployment to GitHub Pages and itch.io. Commit 89e6ea7. Progress now 60/92 (65.2%). G2 (Web Deployment) now in_progress."
     }
   ],
   "constraints": [
