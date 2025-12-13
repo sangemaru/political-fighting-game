@@ -98,6 +98,15 @@ func _on_area_entered(area: Area2D) -> void:
 	# Play hit sound effect
 	_play_hit_sound(damage)
 
+	# Spawn hit particle effect (F53)
+	_spawn_hit_effect(target.global_position, damage)
+
+	# Trigger screen shake (F52)
+	_trigger_screen_shake(damage)
+
+	# Update combo counter (F55)
+	_update_combo_counter()
+
 	# Emit signal
 	hit_connected.emit(target, damage)
 
@@ -108,3 +117,46 @@ func _play_hit_sound(hit_damage: int) -> void:
 		AudioManager.play_sfx("heavy_hit")
 	else:
 		AudioManager.play_sfx("light_hit")
+
+
+## Spawn hit particle effect (F53)
+func _spawn_hit_effect(position: Vector2, hit_damage: int) -> void:
+	# Find battle scene root to spawn effect
+	var battle_scene = _find_battle_scene()
+	if battle_scene == null:
+		return
+
+	HitEffect.spawn_at(battle_scene, position, hit_damage)
+
+
+## Trigger screen shake (F52)
+func _trigger_screen_shake(hit_damage: int) -> void:
+	# Find battle scene to access screen shake
+	var battle_scene = _find_battle_scene()
+	if battle_scene == null or battle_scene.screen_shake == null:
+		return
+
+	battle_scene.screen_shake.shake_from_damage(hit_damage)
+
+
+## Update combo counter (F55)
+func _update_combo_counter() -> void:
+	# Find battle scene to access combo counter
+	var battle_scene = _find_battle_scene()
+	if battle_scene == null or owner_fighter == null:
+		return
+
+	var player_id = owner_fighter.player_id
+	if battle_scene.combo_counters.has(player_id):
+		var combo_counter = battle_scene.combo_counters[player_id]
+		combo_counter.increment_combo()
+
+
+## Find battle scene in parent hierarchy
+func _find_battle_scene() -> BattleScene:
+	var node = get_parent()
+	while node != null:
+		if node is BattleScene:
+			return node
+		node = node.get_parent()
+	return null

@@ -14,7 +14,8 @@ enum State {
 	ATTACKING = 3,
 	HITSTUN = 4,
 	KNOCKDOWN = 5,
-	DEAD = 6
+	DEAD = 6,
+	BLOCKING = 7
 }
 
 ## References
@@ -46,6 +47,7 @@ func _initialize_states() -> void:
 	_state_objects[State.HITSTUN] = _HitstunState.new(self)
 	_state_objects[State.KNOCKDOWN] = _KnockdownState.new(self)
 	_state_objects[State.DEAD] = _DeadState.new(self)
+	_state_objects[State.BLOCKING] = _BlockingState.new(self)
 
 
 ## Change to a new state
@@ -107,11 +109,24 @@ class _IdleState:
 	func _process_state(delta: float) -> void:
 		# Check input for transitions
 		var input_direction = Input.get_axis("ui_left", "ui_right")
+
+		# Check for blocking first
+		if _is_blocking_input(input_direction):
+			fsm.change_state(FighterStateMachine.State.BLOCKING)
+			return
+
 		if input_direction != 0:
 			fsm.change_state(FighterStateMachine.State.WALKING)
 
 		if Input.is_action_just_pressed("ui_up"):
 			fsm.change_state(FighterStateMachine.State.JUMPING)
+
+	func _is_blocking_input(input_direction: float) -> bool:
+		if fsm.fighter.opponent_ref == null or input_direction == 0:
+			return false
+		var to_opponent = fsm.fighter.opponent_ref.global_position - fsm.fighter.global_position
+		var direction_to_opponent = sign(to_opponent.x)
+		return sign(input_direction) == -direction_to_opponent
 
 	func _physics_process_state(delta: float) -> void:
 		# Maintain velocity on ground
@@ -131,6 +146,11 @@ class _WalkingState:
 	func _process_state(delta: float) -> void:
 		var input_direction = Input.get_axis("ui_left", "ui_right")
 
+		# Check for blocking first
+		if _is_blocking_input(input_direction):
+			fsm.change_state(FighterStateMachine.State.BLOCKING)
+			return
+
 		# Handle movement
 		if input_direction != 0:
 			fsm.fighter.set_facing_direction(input_direction)
@@ -142,6 +162,13 @@ class _WalkingState:
 		# Jump transition
 		if Input.is_action_just_pressed("ui_up"):
 			fsm.change_state(FighterStateMachine.State.JUMPING)
+
+	func _is_blocking_input(input_direction: float) -> bool:
+		if fsm.fighter.opponent_ref == null or input_direction == 0:
+			return false
+		var to_opponent = fsm.fighter.opponent_ref.global_position - fsm.fighter.global_position
+		var direction_to_opponent = sign(to_opponent.x)
+		return sign(input_direction) == -direction_to_opponent
 
 	func _physics_process_state(delta: float) -> void:
 		pass
@@ -285,3 +312,54 @@ class _DeadState:
 
 	func _physics_process_state(delta: float) -> void:
 		pass  # Dead state does nothing
+
+
+class _BlockingState:
+	var fsm: FighterStateMachine
+	var block_timer: float = 0.0
+
+	func _init(fsm_ref: FighterStateMachine) -> void:
+		fsm = fsm_ref
+
+	func _enter_state() -> void:
+		block_timer = 0.0
+		fsm.fighter.velocity.x = 0  # Can't move while blocking
+		# Visual feedback (could modulate sprite color)
+		if fsm.fighter.has_node("Sprite2D"):
+			var sprite = fsm.fighter.get_node("Sprite2D")
+			sprite.modulate = Color(0.7, 0.7, 1.0, 1.0)  # Blue tint
+
+	func _exit_state() -> void:
+		# Remove visual feedback
+		if fsm.fighter.has_node("Sprite2D"):
+			var sprite = fsm.fighter.get_node("Sprite2D")
+			sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Reset
+
+	func _process_state(delta: float) -> void:
+		block_timer += delta
+
+		# Check if still holding block direction
+		if not _is_blocking_input():
+			# Stop blocking
+			fsm.change_state(FighterStateMachine.State.IDLE)
+
+	func _physics_process_state(delta: float) -> void:
+		# Ensure no movement
+		fsm.fighter.velocity.x = 0
+
+	func _is_blocking_input() -> bool:
+		# Blocking means holding away from opponent
+		# For now, just check if holding left/right
+		# (BaseFighter should set this properly based on opponent position)
+		var input_direction = Input.get_axis("ui_left", "ui_right")
+
+		# If no opponent ref, can't determine block direction
+		if fsm.fighter.opponent_ref == null:
+			return false
+
+		# Calculate direction to opponent
+		var to_opponent = fsm.fighter.opponent_ref.global_position - fsm.fighter.global_position
+		var direction_to_opponent = sign(to_opponent.x)
+
+		# Blocking if holding opposite direction
+		return sign(input_direction) == -direction_to_opponent and input_direction != 0

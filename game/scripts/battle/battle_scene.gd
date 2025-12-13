@@ -18,6 +18,9 @@ var fighters: Dictionary = {}  # {player_id: fighter_ref}
 var ui_layer: CanvasLayer = null
 var health_bars: Dictionary = {}  # {player_id: health_bar_ref}
 var round_timer_label: Label = null
+var camera: Camera2D = null
+var screen_shake: ScreenShake = null
+var combo_counters: Dictionary = {}  # {player_id: combo_counter_ref}
 
 ## Battle state tracking
 var battle_active: bool = false
@@ -48,6 +51,9 @@ func _ready() -> void:
 
 	# Setup stage
 	_setup_stage()
+
+	# Setup camera with screen shake (F52)
+	_setup_camera()
 
 	# Setup UI layer
 	_setup_ui_layer()
@@ -147,6 +153,21 @@ func _setup_stage() -> void:
 	print("[BattleScene] Stage loaded: %s" % stage_id)
 
 
+func _setup_camera() -> void:
+	"""Setup camera with screen shake effect (F52)"""
+	camera = Camera2D.new()
+	camera.name = "BattleCamera"
+	camera.enabled = true
+	add_child(camera)
+
+	# Add screen shake component
+	screen_shake = ScreenShake.new()
+	screen_shake.name = "ScreenShake"
+	camera.add_child(screen_shake)
+
+	print("[BattleScene] Camera with screen shake initialized")
+
+
 func _setup_ui_layer() -> void:
 	"""Setup UI canvas layer with health bars and timer"""
 	ui_layer = CanvasLayer.new()
@@ -156,6 +177,9 @@ func _setup_ui_layer() -> void:
 
 	# Create health bars for both players (F40 - part of UI setup)
 	_create_player_ui()
+
+	# Create combo counters for both players (F55)
+	_create_combo_counters()
 
 	# Create round timer
 	_create_round_timer()
@@ -207,6 +231,44 @@ func _create_player_ui() -> void:
 	health_bars[2] = p2_hb
 
 	print("[BattleScene] Health bars created for both players")
+
+
+func _create_combo_counters() -> void:
+	"""Create combo counter UI for both players (F55)"""
+	var combo_counter_scene = load("res://game/scenes/ui/combo_counter.tscn")
+	if combo_counter_scene == null:
+		push_error("Failed to load combo counter scene")
+		return
+
+	# Player 1 combo counter (below health bar)
+	var p1_combo = combo_counter_scene.instantiate()
+	p1_combo.name = "ComboCounter_P1"
+	p1_combo.anchors_left = 0.0
+	p1_combo.anchors_top = 0.15
+	p1_combo.anchors_right = 0.35
+	p1_combo.anchors_bottom = 0.25
+	p1_combo.offset_left = 20.0
+	p1_combo.offset_top = 0.0
+	p1_combo.offset_right = -20.0
+	p1_combo.offset_bottom = 0.0
+	ui_layer.add_child(p1_combo)
+	combo_counters[1] = p1_combo
+
+	# Player 2 combo counter (below health bar)
+	var p2_combo = combo_counter_scene.instantiate()
+	p2_combo.name = "ComboCounter_P2"
+	p2_combo.anchors_left = 0.65
+	p2_combo.anchors_top = 0.15
+	p2_combo.anchors_right = 1.0
+	p2_combo.anchors_bottom = 0.25
+	p2_combo.offset_left = 20.0
+	p2_combo.offset_top = 0.0
+	p2_combo.offset_right = -20.0
+	p2_combo.offset_bottom = 0.0
+	ui_layer.add_child(p2_combo)
+	combo_counters[2] = p2_combo
+
+	print("[BattleScene] Combo counters created for both players")
 
 
 func _create_round_timer() -> void:
@@ -291,6 +353,10 @@ func _spawn_players() -> bool:
 	if not _spawn_player(2, fighters_node):
 		push_error("Failed to spawn Player 2")
 		return false
+
+	# Set opponent references for blocking (F54)
+	fighters[1].opponent_ref = fighters[2]
+	fighters[2].opponent_ref = fighters[1]
 
 	return true
 

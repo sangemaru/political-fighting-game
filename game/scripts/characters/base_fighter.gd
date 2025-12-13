@@ -24,6 +24,8 @@ var is_alive: bool = true
 var state_machine: FighterStateMachine
 var knockback_velocity: Vector2 = Vector2.ZERO
 var facing_direction: int = 1  # 1 for right, -1 for left
+var opponent_ref: BaseFighter = null  # Reference to opponent (for blocking)
+var is_blocking: bool = false  # Current blocking state
 
 ## Knockback physics
 var knockback_friction: float = 0.85  # Decay rate per frame (0.85 = 15% reduction per frame)
@@ -43,6 +45,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if state_machine:
+		# Update blocking state based on current state
+		is_blocking = (state_machine.current_state == FighterStateMachine.State.BLOCKING)
 		state_machine.process_state(delta)
 
 
@@ -85,7 +89,11 @@ func take_damage(amount: int) -> void:
 	if not is_alive:
 		return
 
+	# Reduce damage if blocking
 	var damage = maxi(1, amount)
+	if is_blocking:
+		damage = int(damage * 0.25)  # 75% damage reduction while blocking
+
 	health -= damage
 	health_changed.emit(health, max_health)
 
@@ -100,10 +108,21 @@ func apply_knockback(direction: Vector2, force: float) -> void:
 
 	# Weight affects knockback resistance
 	var knockback_multiplier = 1.0 / weight
-	knockback_velocity = direction.normalized() * force * knockback_multiplier
+	var final_knockback = direction.normalized() * force * knockback_multiplier
 
-	# Transition to hitstun state
-	state_machine.change_state(FighterStateMachine.State.HITSTUN)
+	# Reduce knockback if blocking
+	if is_blocking:
+		final_knockback *= 0.25  # 75% knockback reduction while blocking
+
+	knockback_velocity = final_knockback
+
+	# Transition to hitstun state (or blockstun if blocking)
+	if is_blocking:
+		# Shorter stun when blocking
+		state_machine.set_hitstun_frames(5)  # 5 frames of blockstun
+		state_machine.change_state(FighterStateMachine.State.HITSTUN)
+	else:
+		state_machine.change_state(FighterStateMachine.State.HITSTUN)
 
 
 ## Character dies
