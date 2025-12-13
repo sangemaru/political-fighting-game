@@ -1,0 +1,62 @@
+{
+  "id": "demagogue_1",
+  "name": "The Demagogue",
+  "description": "A populist political speaker known for theatrical gestures and fiery rhetoric. Fast and evasive in combat, relying on quick strikes and hit-and-run tactics to overwhelm opponents.",
+  "base_stats": {
+    "health": 85,
+    "speed": 220,
+    "weight": 0.8,
+    "attack_power": 1.0,
+    "defense": 1.0
+  },
+  "moves": [
+    {
+      "id": "light_attack",
+      "name": "Finger Point",
+      "input": "ATTACK",
+      "damage": 6,
+      "startup_frames": 2,
+      "active_frames": 2,
+      "recovery_frames": 4,
+      "knockback": 80,
+      "hitbox": {
+        "offset_x": 30,
+        "offset_y": -10,
+        "width": 40,
+        "height": 50
+      }
+    },
+    {
+      "id": "heavy_attack",
+      "name": "Podium Slam",
+      "input": "DOWN + ATTACK",
+      "damage": 12,
+      "startup_frames": 6,
+      "active_frames": 4,
+      "recovery_frames": 10,
+      "knockback": 150,
+      "hitbox": {
+        "offset_x": 20,
+        "offset_y": 0,
+        "width": 60,
+        "height": 60
+      }
+    },
+    {
+      "id": "special",
+      "name": "Rally Cry",
+      "input": "DOWN, DOWN + ATTACK",
+      "damage": 3,
+      "startup_frames": 5,
+      "active_frames": 8,
+      "recovery_frames": 8,
+      "knockback": 50,
+      "hitbox": {
+        "offset_x": 0,
+        "offset_y": -20,
+        "width": 100,
+        "height": 80
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "id": "politician_1",
+  "name": "The Dictator",
+  "description": "A powerful authoritarian leader with strong attacks and moderate defense.",
+  "base_stats": {
+    "health": 100,
+    "speed": 200.0,
+    "weight": 1.0,
+    "attack_power": 1.2,
+    "defense": 0.8
+  },
+  "moves": [
+    {
+      "id": "light_punch",
+      "name": "Jab",
+      "input": "ATTACK",
+      "damage": 8,
+      "startup_frames": 3,
+      "active_frames": 2,
+      "recovery_frames": 6,
+      "knockback": 50.0,
+      "hitbox": {
+        "offset_x": 30,
+        "offset_y": 0,
+        "width": 40,
+        "height": 30
+      }
+    },
+    {
+      "id": "heavy_punch",
+      "name": "Power Punch",
+      "input": "FORWARD, ATTACK",
+      "damage": 15,
+      "startup_frames": 8,
+      "active_frames": 3,
+      "recovery_frames": 12,
+      "knockback": 100.0,
+      "hitbox": {
+        "offset_x": 35,
+        "offset_y": 0,
+        "width": 50,
+        "height": 35
+      }
+    },
+    {
+      "id": "kick",
+      "name": "Roundhouse Kick",
+      "input": "DOWN, ATTACK",
+      "damage": 12,
+      "startup_frames": 6,
+      "active_frames": 4,
+      "recovery_frames": 10,
+      "knockback": 80.0,
+      "hitbox": {
+        "offset_x": 40,
+        "offset_y": -5,
+        "width": 45,
+        "height": 40
+      }
+    }
+  ]
+}

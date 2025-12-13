@@ -2,17 +2,127 @@ extends CharacterBody2D
 
 ## Base Fighter
 ## Base class for all playable and AI characters
+## Handles health, knockback, and delegates state/movement to components
 
 class_name BaseFighter
 
+## Signals
+signal health_changed(current: int, max: int)
+signal died(player_id: int)
+
+## Properties
+@export var player_id: int = 1
+@export var max_health: int = 100
+@export var speed: float = 200.0
+@export var weight: float = 1.0
+@export var gravity: float = 800.0
+@export var jump_height: float = 150.0
+
+## State
+var health: int
+var is_alive: bool = true
+var state_machine: FighterStateMachine
+var knockback_velocity: Vector2 = Vector2.ZERO
+var facing_direction: int = 1  # 1 for right, -1 for left
+
+## References
+@onready var sprite: Sprite2D = $Sprite2D
+
 
 func _ready() -> void:
-	pass
+	health = max_health
+	_initialize_state_machine()
+	_setup_physics_layer()
 
 
 func _process(delta: float) -> void:
-	pass
+	if state_machine:
+		state_machine.process_state(delta)
 
 
 func _physics_process(delta: float) -> void:
-	pass
+	if not is_alive:
+		return
+
+	# Apply gravity
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+	# Apply knockback
+	velocity += knockback_velocity
+	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, 0.1)  # Decay knockback
+
+	# Move the character
+	move_and_slide()
+
+	# Physics state processing
+	if state_machine:
+		state_machine.physics_process_state(delta)
+
+
+## Initialize the state machine with all fighter states
+func _initialize_state_machine() -> void:
+	state_machine = FighterStateMachine.new(self)
+	add_child(state_machine)
+	state_machine.change_state(FighterStateMachine.State.IDLE)
+
+
+## Setup physics layer (characters on layer 1)
+func _setup_physics_layer() -> void:
+	physics_layer = 1
+	collision_layer = 1
+	collision_mask = 1
+
+
+## Take damage and update health
+func take_damage(amount: int) -> void:
+	if not is_alive:
+		return
+
+	var damage = maxi(1, amount)
+	health -= damage
+	health_changed.emit(health, max_health)
+
+	if health <= 0:
+		die()
+
+
+## Apply knockback force
+func apply_knockback(direction: Vector2, force: float) -> void:
+	if not is_alive:
+		return
+
+	# Weight affects knockback resistance
+	var knockback_multiplier = 1.0 / weight
+	knockback_velocity = direction.normalized() * force * knockback_multiplier
+
+	# Transition to hitstun state
+	state_machine.change_state(FighterStateMachine.State.HITSTUN)
+
+
+## Character dies
+func die() -> void:
+	if not is_alive:
+		return
+
+	is_alive = false
+	state_machine.change_state(FighterStateMachine.State.DEAD)
+	died.emit(player_id)
+
+
+## Set facing direction and flip sprite
+func set_facing_direction(direction: int) -> void:
+	if direction != 0:
+		facing_direction = sign(direction)
+		if sprite:
+			sprite.flip_h = facing_direction < 0
+
+
+## Get current state
+func get_current_state() -> int:
+	return state_machine.current_state if state_machine else -1
+
+
+## Get current velocity (for external systems)
+func get_velocity() -> Vector2:
+	return velocity
