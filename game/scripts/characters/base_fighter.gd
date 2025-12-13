@@ -25,6 +25,12 @@ var state_machine: FighterStateMachine
 var knockback_velocity: Vector2 = Vector2.ZERO
 var facing_direction: int = 1  # 1 for right, -1 for left
 
+## Knockback physics
+var knockback_friction: float = 0.85  # Decay rate per frame (0.85 = 15% reduction per frame)
+
+## Combat components
+var hurtbox: Hurtbox = null
+
 ## References
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -48,9 +54,9 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	# Apply knockback
+	# Apply knockback with friction-based decay
 	velocity += knockback_velocity
-	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, 0.1)  # Decay knockback
+	knockback_velocity *= knockback_friction  # Decay per frame
 
 	# Move the character
 	move_and_slide()

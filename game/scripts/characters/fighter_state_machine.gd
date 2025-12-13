@@ -22,11 +22,14 @@ var fighter: BaseFighter
 var current_state: int = State.IDLE
 var _state_objects: Dictionary = {}
 var _hitstun_timer: float = 0.0
+var _hitstun_frames: int = 0  # Frame-based hitstun
+var _hitstun_frame_counter: int = 0
 var _knockdown_timer: float = 0.0
 
 ## Constants
 const HITSTUN_DURATION: float = 0.3
 const KNOCKDOWN_DURATION: float = 0.5
+const FRAMES_PER_SECOND: int = 60  # 60 FPS
 
 
 func _init(fighter_ref: BaseFighter) -> void:
@@ -80,6 +83,12 @@ func physics_process_state(delta: float) -> void:
 		var state_obj = _state_objects[current_state]
 		if state_obj.has_method("_physics_process_state"):
 			state_obj._physics_process_state(delta)
+
+
+## Set hitstun duration in frames (called when hit)
+func set_hitstun_frames(frames: int) -> void:
+	_hitstun_frames = frames
+	_hitstun_frame_counter = 0
 
 
 # ============================================================
@@ -208,10 +217,21 @@ class _HitstunState:
 	func _enter_state() -> void:
 		hitstun_timer = 0.0
 		fsm.fighter.velocity.x = 0  # Stop movement during hitstun
+		fsm._hitstun_frame_counter = 0
 
 	func _process_state(delta: float) -> void:
+		# Count frames instead of time for deterministic hitstun
+		fsm._hitstun_frame_counter += 1
 		hitstun_timer += delta
-		if hitstun_timer >= FighterStateMachine.HITSTUN_DURATION:
+
+		# Use frame-based hitstun if set, otherwise fall back to time-based
+		var frames_exceeded = false
+		if fsm._hitstun_frames > 0:
+			frames_exceeded = fsm._hitstun_frame_counter >= fsm._hitstun_frames
+		else:
+			frames_exceeded = hitstun_timer >= FighterStateMachine.HITSTUN_DURATION
+
+		if frames_exceeded:
 			_exit_hitstun()
 
 	func _physics_process_state(delta: float) -> void:
