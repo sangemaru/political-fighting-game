@@ -24,20 +24,24 @@ func _process(_delta: float) -> void:
 	if not players_ready:
 		# Any player can change stage selection
 		if Input.is_action_just_pressed("p1_move_left") or Input.is_action_just_pressed("p2_move_left"):
+			AudioManager.play_sfx("menu_select")
 			selected_stage = (selected_stage - 1 + available_stages.size()) % available_stages.size()
 			_update_display()
 		elif Input.is_action_just_pressed("p1_move_right") or Input.is_action_just_pressed("p2_move_right"):
+			AudioManager.play_sfx("menu_select")
 			selected_stage = (selected_stage + 1) % available_stages.size()
 			_update_display()
 
 		# Any player can confirm
 		if Input.is_action_just_pressed("p1_attack") or Input.is_action_just_pressed("p2_attack"):
+			AudioManager.play_sfx("menu_confirm")
 			players_ready = true
 			_update_display()
 			_on_stage_confirmed()
 
 	# Back button
 	if Input.is_action_just_pressed("ui_cancel"):
+		AudioManager.play_sfx("menu_back")
 		_on_back_pressed()
 
 

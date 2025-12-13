@@ -58,6 +58,9 @@ func show_victory(winner: int, rounds_p1: int, rounds_p2: int, winner_char_name:
 	if winner_sprite:
 		winner_sprite.visible = false
 
+	# Play victory music
+	AudioManager.play_music("victory_theme")
+
 	# Show the screen
 	visible = true
 	rematch_button.grab_focus()
@@ -67,6 +70,7 @@ func show_victory(winner: int, rounds_p1: int, rounds_p2: int, winner_char_name:
 
 ## F60: Rematch button handler
 func _on_rematch_pressed() -> void:
+	AudioManager.play_sfx("menu_confirm")
 	print("[VictoryScreen] Rematch requested")
 	visible = false
 	GameManager.reset_match()
@@ -74,6 +78,7 @@ func _on_rematch_pressed() -> void:
 
 ## Return to character select
 func _on_character_select_pressed() -> void:
+	AudioManager.play_sfx("menu_confirm")
 	print("[VictoryScreen] Returning to character select")
 	visible = false
 	SceneManager.change_scene("res://game/scenes/menus/character_select.tscn")
@@ -81,6 +86,7 @@ func _on_character_select_pressed() -> void:
 
 ## Return to main menu
 func _on_main_menu_pressed() -> void:
+	AudioManager.play_sfx("menu_confirm")
 	print("[VictoryScreen] Returning to main menu")
 	visible = false
 	SceneManager.change_scene("res://game/scenes/menus/main_menu.tscn")

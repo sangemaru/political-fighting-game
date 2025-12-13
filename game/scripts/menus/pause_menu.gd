@@ -31,6 +31,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_resume_pressed() -> void:
+	AudioManager.play_sfx("menu_confirm")
 	# Unpause and remove menu
 	get_tree().paused = false
 	GameManager.toggle_pause()  # Returns to BATTLE state
@@ -38,11 +39,13 @@ func _on_resume_pressed() -> void:
 
 
 func _on_options_pressed() -> void:
+	AudioManager.play_sfx("menu_select")
 	# TODO: Open options overlay (for now, just placeholder)
 	print("Options not implemented in pause menu yet")
 
 
 func _on_quit_pressed() -> void:
+	AudioManager.play_sfx("menu_confirm")
 	# Unpause and return to main menu
 	get_tree().paused = false
 	GameManager.change_state(GameManager.GameState.MENU)

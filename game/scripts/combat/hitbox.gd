@@ -95,5 +95,16 @@ func _on_area_entered(area: Area2D) -> void:
 	# Apply damage through hurtbox
 	hurtbox.receive_hit(damage, knockback_direction, knockback_force, hitstun_frames)
 
+	# Play hit sound effect
+	_play_hit_sound(damage)
+
 	# Emit signal
 	hit_connected.emit(target, damage)
+
+
+## Play appropriate hit sound based on damage
+func _play_hit_sound(hit_damage: int) -> void:
+	if hit_damage >= 15:
+		AudioManager.play_sfx("heavy_hit")
+	else:
+		AudioManager.play_sfx("light_hit")

@@ -67,6 +67,9 @@ func _ready() -> void:
 	battle_active = true
 	round_active = true
 
+	# Play battle music
+	AudioManager.play_music("battle_theme")
+
 	print("[BattleScene] Battle initialized successfully")
 	print("  P1: %s (Health: %d)" % [fighters[1].name, fighters[1].health])
 	print("  P2: %s (Health: %d)" % [fighters[2].name, fighters[2].health])

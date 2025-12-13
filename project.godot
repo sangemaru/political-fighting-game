@@ -94,6 +94,7 @@ p2_special={
 
 GameManager="*res://game/scripts/core/game_manager.gd"
 SceneManager="*res://game/scripts/core/scene_manager.gd"
+AudioManager="*res://game/scripts/core/audio_manager.gd"
 
 [physics]
 

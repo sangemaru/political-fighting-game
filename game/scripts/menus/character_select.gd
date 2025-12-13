@@ -35,29 +35,36 @@ func _process(_delta: float) -> void:
 	# Player 1 controls (WASD + Space)
 	if not p1_ready:
 		if Input.is_action_just_pressed("p1_move_left"):
+			AudioManager.play_sfx("menu_select")
 			selected_character_p1 = (selected_character_p1 - 1 + available_characters.size()) % available_characters.size()
 			_update_p1_display()
 		elif Input.is_action_just_pressed("p1_move_right"):
+			AudioManager.play_sfx("menu_select")
 			selected_character_p1 = (selected_character_p1 + 1) % available_characters.size()
 			_update_p1_display()
 		elif Input.is_action_just_pressed("p1_attack"):
+			AudioManager.play_sfx("menu_confirm")
 			p1_ready = true
 			_update_p1_display()
 
 	# Player 2 controls (Arrows + Enter)
 	if not p2_ready:
 		if Input.is_action_just_pressed("p2_move_left"):
+			AudioManager.play_sfx("menu_select")
 			selected_character_p2 = (selected_character_p2 - 1 + available_characters.size()) % available_characters.size()
 			_update_p2_display()
 		elif Input.is_action_just_pressed("p2_move_right"):
+			AudioManager.play_sfx("menu_select")
 			selected_character_p2 = (selected_character_p2 + 1) % available_characters.size()
 			_update_p2_display()
 		elif Input.is_action_just_pressed("p2_attack"):
+			AudioManager.play_sfx("menu_confirm")
 			p2_ready = true
 			_update_p2_display()
 
 	# Back button (ESC)
 	if Input.is_action_just_pressed("ui_cancel"):
+		AudioManager.play_sfx("menu_back")
 		_on_back_pressed()
 
 	# Both players ready - proceed to stage select
