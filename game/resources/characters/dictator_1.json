@@ -1,0 +1,62 @@
+{
+  "id": "dictator_1",
+  "name": "The Generalissimo",
+  "description": "A generic 20th-century military dictator known for authoritarian rule, theatrical medals, and arrogant demeanor. Powerful but slow, relying on heavy devastating strikes that demand positioning and commitment. A tank-type character that overwhelms through raw power.",
+  "base_stats": {
+    "health": 100,
+    "speed": 180,
+    "weight": 1.2,
+    "attack_power": 1.2,
+    "defense": 1.0
+  },
+  "moves": [
+    {
+      "id": "light_attack",
+      "name": "Command Jab",
+      "input": "ATTACK",
+      "damage": 8,
+      "startup_frames": 3,
+      "active_frames": 2,
+      "recovery_frames": 5,
+      "knockback": 50,
+      "hitbox": {
+        "offset_x": 30,
+        "offset_y": 0,
+        "width": 40,
+        "height": 30
+      }
+    },
+    {
+      "id": "heavy_attack",
+      "name": "Overhead Slam",
+      "input": "DOWN + ATTACK",
+      "damage": 15,
+      "startup_frames": 8,
+      "active_frames": 3,
+      "recovery_frames": 12,
+      "knockback": 180,
+      "hitbox": {
+        "offset_x": 20,
+        "offset_y": -30,
+        "width": 60,
+        "height": 70
+      }
+    },
+    {
+      "id": "special",
+      "name": "Propaganda Shout",
+      "input": "DOWN, DOWN + ATTACK",
+      "damage": 5,
+      "startup_frames": 10,
+      "active_frames": 5,
+      "recovery_frames": 15,
+      "knockback": 200,
+      "hitbox": {
+        "offset_x": 0,
+        "offset_y": -20,
+        "width": 120,
+        "height": 90
+      }
+    }
+  ]
+}
