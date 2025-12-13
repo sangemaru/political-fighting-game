@@ -4,7 +4,7 @@
     "name": "Political Fighting Game",
     "type": "greenfield",
     "created_at": "2025-12-13T00:00:00Z",
-    "last_updated": "2025-12-13T21:15:00Z",
+    "last_updated": "2025-12-13T22:00:00Z",
     "repository_path": "/home/blackthorne/Work/political-fighting-game",
     "primary_language": "gdscript",
     "test_framework": "gdunit4"
@@ -84,10 +84,10 @@
     {"id": "F49", "category": "audio", "description": "Hit sound effects", "status": "passing", "priority": "high", "git_commit": "43a00b4"},
     {"id": "F50", "category": "audio", "description": "Menu sound effects", "status": "passing", "priority": "medium", "git_commit": "43a00b4"},
     {"id": "F51", "category": "audio", "description": "Background music system", "status": "passing", "priority": "medium", "git_commit": "43a00b4"},
-    {"id": "F52", "category": "polish", "description": "Screen shake on hit", "status": "not_started", "priority": "medium"},
-    {"id": "F53", "category": "polish", "description": "Hit particles/effects", "status": "not_started", "priority": "medium"},
-    {"id": "F54", "category": "polish", "description": "Blocking mechanic", "status": "not_started", "priority": "high"},
-    {"id": "F55", "category": "polish", "description": "Combo counter display", "status": "not_started", "priority": "medium"},
+    {"id": "F52", "category": "polish", "description": "Screen shake on hit", "status": "passing", "priority": "medium", "git_commit": "dba3c27"},
+    {"id": "F53", "category": "polish", "description": "Hit particles/effects", "status": "passing", "priority": "medium", "git_commit": "dba3c27"},
+    {"id": "F54", "category": "polish", "description": "Blocking mechanic", "status": "passing", "priority": "high", "git_commit": "dba3c27"},
+    {"id": "F55", "category": "polish", "description": "Combo counter display", "status": "passing", "priority": "medium", "git_commit": "dba3c27"},
     {"id": "F56", "category": "game_flow", "description": "Game settings persistence", "status": "not_started", "priority": "medium"},
     {\"id\": \"F57\", \"category\": \"game_flow\", \"description\": \"Round reset logic\", \"status\": \"passing\", \"priority\": \"critical\", \"git_commit\": \"ca56a6b\"},
     {\"id\": \"F58\", \"category\": \"game_flow\", \"description\": \"Match flow (best of N)\", \"status\": \"passing\", \"priority\": \"critical\", \"git_commit\": \"ca56a6b\"},
@@ -128,11 +128,11 @@
   ],
   "progress": {
     "total_features": 92,
-    "passing": 51,
+    "passing": 55,
     "failing": 0,
     "in_progress": 0,
-    "not_started": 41,
-    "progress_percentage": 55.4
+    "not_started": 37,
+    "progress_percentage": 59.8
   },
   "session_log": [
     {
@@ -174,6 +174,12 @@
       "action": "batch_complete",
       "features_completed": ["F48", "F49", "F50", "F51"],
       "notes": "Audio system implemented: AudioManager autoload, hit/menu SFX hooks, background music with crossfade, volume controls. Commit 43a00b4. Progress now 51/92 (55.4%)."
+    },
+    {
+      "timestamp": "2025-12-13T22:00:00Z",
+      "action": "batch_complete",
+      "features_completed": ["F52", "F53", "F54", "F55"],
+      "notes": "Polish features implemented: screen shake, hit particles, blocking mechanic with damage/knockback reduction, combo counter with timeout/reset. Commit dba3c27. Progress now 55/92 (59.8%)."
     }
   ],
   "constraints": [
