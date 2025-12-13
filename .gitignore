@@ -1,0 +1,29 @@
+# Godot 4.x specific
+.godot/
+*.import
+export_presets.cfg
+*.tscn.backup
+*.gd.swp
+*.gd~
+
+# Build artifacts
+builds/
+dist/
+release/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS specific
+Thumbs.db
+.DS_Store

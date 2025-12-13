@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Character Schema",
+  "description": "Data structure for political fighter characters in the fighting game",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the character"
+    },
+    "name": {
+      "type": "string",
+      "description": "Character name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Character description and background"
+    },
+    "base_stats": {
+      "type": "object",
+      "description": "Core character statistics",
+      "properties": {
+        "health": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum health points"
+        },
+        "speed": {
+          "type": "number",
+          "minimum": 0.1,
+          "description": "Movement speed multiplier"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2.0,
+          "description": "Weight factor affecting knockback (0.5-2.0)"
+        },
+        "attack_power": {
+          "type": "number",
+          "minimum": 0.5,
+          "description": "Base damage multiplier"
+        },
+        "defense": {
+          "type": "number",
+          "minimum": 0.5,
+          "description": "Damage reduction multiplier"
+        }
+      },
+      "required": ["health", "speed", "weight", "attack_power", "defense"]
+    },
+    "moves": {
+      "type": "array",
+      "description": "Array of moves available to this character",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique move identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Move name"
+          },
+          "input": {
+            "type": "string",
+            "description": "Input command for the move (e.g., 'DOWN, DOWN, FORWARD + ATTACK')"
+          },
+          "damage": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Base damage dealt by this move"
+          },
+          "startup_frames": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Frames before move becomes active"
+          },
+          "active_frames": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Frames during which move can hit"
+          },
+          "recovery_frames": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Frames of vulnerability after move ends"
+          },
+          "knockback": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Knockback force"
+          },
+          "hitbox": {
+            "type": "object",
+            "description": "Hitbox data for collision detection",
+            "properties": {
+              "offset_x": {
+                "type": "number",
+                "description": "Hitbox X offset from character position"
+              },
+              "offset_y": {
+                "type": "number",
+                "description": "Hitbox Y offset from character position"
+              },
+              "width": {
+                "type": "number",
+                "minimum": 1,
+                "description": "Hitbox width"
+              },
+              "height": {
+                "type": "number",
+                "minimum": 1,
+                "description": "Hitbox height"
+              }
+            },
+            "required": ["offset_x", "offset_y", "width", "height"]
+          }
+        },
+        "required": ["id", "name", "input", "damage", "startup_frames", "active_frames", "recovery_frames", "knockback", "hitbox"]
+      }
+    }
+  },
+  "required": ["id", "name", "description", "base_stats", "moves"],
+  "additionalProperties": false
+}
