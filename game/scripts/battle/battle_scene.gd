@@ -25,6 +25,10 @@ var round_active: bool = false
 var battle_config: Dictionary = {}
 var player_configs: Dictionary = {}
 
+## Round reset state (F57)
+var is_resetting_round: bool = false
+var countdown_label: Label = null
+
 
 func _ready() -> void:
 	print("[BattleScene] Initializing battle...")
@@ -153,6 +157,12 @@ func _setup_ui_layer() -> void:
 	# Create round timer
 	_create_round_timer()
 
+	# Create countdown overlay (F57)
+	_create_countdown_overlay()
+
+	# Create victory screen (F59)
+	_create_victory_screen()
+
 
 func _create_player_ui() -> void:
 	"""Create health bar UI for both players"""
@@ -219,6 +229,46 @@ func _create_round_timer() -> void:
 	timer_control.add_child(round_timer_label)
 
 	print("[BattleScene] Round timer created")
+
+
+func _create_countdown_overlay() -> void:
+	"""Create countdown overlay for round start (F57)"""
+	var countdown_control = Control.new()
+	countdown_control.name = "CountdownContainer"
+	countdown_control.anchors_left = 0.0
+	countdown_control.anchors_top = 0.0
+	countdown_control.anchors_right = 1.0
+	countdown_control.anchors_bottom = 1.0
+	ui_layer.add_child(countdown_control)
+
+	countdown_label = Label.new()
+	countdown_label.name = "CountdownLabel"
+	countdown_label.text = ""
+	countdown_label.add_theme_font_size_override("font_size", 96)
+	countdown_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	countdown_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	countdown_label.anchor_left = 0.0
+	countdown_label.anchor_top = 0.0
+	countdown_label.anchor_right = 1.0
+	countdown_label.anchor_bottom = 1.0
+	countdown_label.visible = false
+	countdown_control.add_child(countdown_label)
+
+	print("[BattleScene] Countdown overlay created")
+
+
+func _create_victory_screen() -> void:
+	"""Create victory screen overlay (F59)"""
+	var victory_screen_scene = load("res://game/scenes/menus/victory_screen.tscn")
+	if victory_screen_scene == null:
+		push_error("Failed to load victory screen scene")
+		return
+
+	var victory_screen = victory_screen_scene.instantiate()
+	victory_screen.name = "VictoryScreen"
+	ui_layer.add_child(victory_screen)
+
+	print("[BattleScene] Victory screen created")
 
 
 ## ============================================================================
@@ -347,14 +397,14 @@ func _end_round_by_timeout() -> void:
 	var p1_health = fighters[1].health
 	var p2_health = fighters[2].health
 
-	var winner = "Draw"
+	var winner_id = 0  # 0 = draw
 	if p1_health > p2_health:
-		winner = "Player 1"
+		winner_id = 1
 	elif p2_health > p1_health:
-		winner = "Player 2"
+		winner_id = 2
 
-	print("[BattleScene] Round ended by timeout - Winner: %s (P1: %d HP, P2: %d HP)" % [winner, p1_health, p2_health])
-	GameManager.end_round(winner)
+	print("[BattleScene] Round ended by timeout - Winner: Player %d (P1: %d HP, P2: %d HP)" % [winner_id, p1_health, p2_health])
+	GameManager.end_round(winner_id)
 
 
 func _on_player_died(player_id: int) -> void:
@@ -362,10 +412,11 @@ func _on_player_died(player_id: int) -> void:
 	round_active = false
 
 	var opponent_id = 3 - player_id  # 1->2, 2->1
-	var opponent_name = "Player %d" % opponent_id
 
-	print("[BattleScene] Player %d died - Round won by %s" % [player_id, opponent_name])
-	GameManager.end_round(opponent_name)
+	print("[BattleScene] Player %d died - Round won by Player %d" % [player_id, opponent_id])
+
+	# Signal to GameManager to track the win (F58)
+	GameManager.end_round(opponent_id)
 
 
 ## ============================================================================
@@ -456,6 +507,68 @@ func _handle_player_input(player_id: int, action: String) -> void:
 
 
 ## ============================================================================
+## F57: ROUND RESET LOGIC
+## ============================================================================
+
+func reset_round() -> void:
+	"""Reset round with countdown (F57)"""
+	if is_resetting_round:
+		return
+
+	is_resetting_round = true
+	round_active = false
+
+	print("[BattleScene] Resetting round...")
+
+	# Reset fighter positions and state
+	for player_id in fighters:
+		var fighter = fighters[player_id]
+		var spawn_pos = stage.get_spawn_position(player_id)
+
+		# Reset position
+		fighter.global_position = spawn_pos
+
+		# Reset health
+		fighter.health = fighter.max_health
+		fighter.is_alive = true
+
+		# Reset state
+		fighter.state_machine.change_state(FighterStateMachine.State.IDLE)
+		fighter.velocity = Vector2.ZERO
+
+	# Show countdown: 3, 2, 1, FIGHT!
+	await _show_countdown()
+
+	# Reset game manager timer
+	GameManager.round_timer_frames = 0
+
+	# Resume battle
+	round_active = true
+	is_resetting_round = false
+
+	print("[BattleScene] Round reset complete - FIGHT!")
+
+
+func _show_countdown() -> void:
+	"""Display countdown: 3, 2, 1, FIGHT!"""
+	if countdown_label == null:
+		return
+
+	countdown_label.visible = true
+
+	for i in range(3, 0, -1):
+		countdown_label.text = str(i)
+		countdown_label.add_theme_color_override("font_color", Color.YELLOW)
+		await get_tree().create_timer(1.0).timeout
+
+	countdown_label.text = "FIGHT!"
+	countdown_label.add_theme_color_override("font_color", Color.GREEN)
+	await get_tree().create_timer(0.5).timeout
+
+	countdown_label.visible = false
+
+
+## ============================================================================
 ## BATTLE STATE CALLBACKS
 ## ============================================================================
 
@@ -470,13 +583,8 @@ func _on_round_started(round_number: int) -> void:
 	"""Called when a new round starts"""
 	print("[BattleScene] Round %d started" % round_number)
 
-	# Reset fighters
-	for fighter in fighters.values():
-		fighter.health = fighter.max_health
-		fighter.is_alive = true
-		fighter.state_machine.change_state(FighterStateMachine.State.IDLE)
-
-	round_active = true
+	# Use F57 round reset logic with countdown
+	reset_round()
 
 
 func _update_round_timer() -> void:
