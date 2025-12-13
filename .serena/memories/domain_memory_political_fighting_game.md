@@ -4,7 +4,7 @@
     "name": "Political Fighting Game",
     "type": "greenfield",
     "created_at": "2025-12-13T00:00:00Z",
-    "last_updated": "2025-12-13T23:20:00Z",
+    "last_updated": "2025-12-14T00:00:00Z",
     "repository_path": "/home/blackthorne/Work/political-fighting-game",
     "primary_language": "gdscript",
     "test_framework": "gdunit4"
@@ -88,7 +88,7 @@
     {"id": "F53", "category": "polish", "description": "Hit particles/effects", "status": "passing", "priority": "medium", "git_commit": "dba3c27"},
     {"id": "F54", "category": "polish", "description": "Blocking mechanic", "status": "passing", "priority": "high", "git_commit": "dba3c27"},
     {"id": "F55", "category": "polish", "description": "Combo counter display", "status": "passing", "priority": "medium", "git_commit": "dba3c27"},
-    {"id": "F56", "category": "game_flow", "description": "Game settings persistence", "status": "not_started", "priority": "medium"},
+    {"id": "F56", "category": "game_flow", "description": "Game settings persistence", "status": "passing", "priority": "medium", "git_commit": "b014873"},
     {\"id\": \"F57\", \"category\": \"game_flow\", \"description\": \"Round reset logic\", \"status\": \"passing\", \"priority\": \"critical\", \"git_commit\": \"ca56a6b\"},
     {\"id\": \"F58\", \"category\": \"game_flow\", \"description\": \"Match flow (best of N)\", \"status\": \"passing\", \"priority\": \"critical\", \"git_commit\": \"ca56a6b\"},
     {\"id\": \"F59\", \"category\": \"game_flow\", \"description\": \"Victory screen\", \"status\": \"passing\", \"priority\": \"high\", \"git_commit\": \"ca56a6b\"},
@@ -97,8 +97,8 @@
     {"id": "F62", "category": "character", "description": "Character 4 placeholder", "status": "not_started", "priority": "low"},
     {"id": "F63", "category": "stage", "description": "Stage 2 placeholder", "status": "not_started", "priority": "low"},
     {"id": "F64", "category": "stage", "description": "Stage 3 placeholder", "status": "not_started", "priority": "low"},
-    {"id": "F65", "category": "input", "description": "Controller support", "status": "not_started", "priority": "high"},
-    {"id": "F66", "category": "input", "description": "Key rebinding", "status": "not_started", "priority": "medium"},
+    {"id": "F65", "category": "input", "description": "Controller support", "status": "passing", "priority": "high", "git_commit": "b014873"},
+    {"id": "F66", "category": "input", "description": "Key rebinding", "status": "passing", "priority": "medium", "git_commit": "b014873"},
     {"id": "F67", "category": "input", "description": "Input display overlay", "status": "not_started", "priority": "low"},
     {"id": "F68", "category": "training", "description": "Training mode scene", "status": "not_started", "priority": "medium"},
     {"id": "F69", "category": "training", "description": "Frame data display", "status": "not_started", "priority": "low"},
@@ -128,11 +128,11 @@
   ],
   "progress": {
     "total_features": 92,
-    "passing": 60,
+    "passing": 63,
     "failing": 0,
     "in_progress": 0,
-    "not_started": 32,
-    "progress_percentage": 65.2
+    "not_started": 29,
+    "progress_percentage": 68.5
   },
   "session_log": [
     {
@@ -186,6 +186,12 @@
       "action": "batch_complete",
       "features_completed": ["F71", "F72", "F73", "F74", "F75"],
       "notes": "Web deployment pipeline implemented: export_presets.cfg for HTML5, web optimization docs, itch.io page setup, GitHub Actions CI with multi-platform builds, automated deployment to GitHub Pages and itch.io. Commit 89e6ea7. Progress now 60/92 (65.2%). G2 (Web Deployment) now in_progress."
+    },
+    {
+      "timestamp": "2025-12-14T00:00:00Z",
+      "action": "batch_complete",
+      "features_completed": ["F56", "F65", "F66"],
+      "notes": "Settings and input polish implemented: SettingsManager autoload with ConfigFile persistence (audio/video/game settings), controller support for 2 players (gamepad + keyboard), key rebinding menu with real-time capture. All settings persist via user://settings.cfg. Commit b014873. Progress now 63/92 (68.5%)."
     }
   ],
   "constraints": [
