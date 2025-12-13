@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Stage Schema",
+  "description": "Data structure for battle stages/arenas in the fighting game",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the stage"
+    },
+    "name": {
+      "type": "string",
+      "description": "Stage display name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Stage description and background lore"
+    },
+    "boundaries": {
+      "type": "object",
+      "description": "Stage boundary coordinates",
+      "properties": {
+        "left": {
+          "type": "number",
+          "description": "Left boundary X position"
+        },
+        "right": {
+          "type": "number",
+          "description": "Right boundary X position"
+        },
+        "top": {
+          "type": "number",
+          "description": "Top boundary Y position"
+        },
+        "bottom": {
+          "type": "number",
+          "description": "Bottom boundary Y position (ground level)"
+        }
+      },
+      "required": ["left", "right", "top", "bottom"]
+    },
+    "spawn_points": {
+      "type": "object",
+      "description": "Player spawn positions",
+      "properties": {
+        "player_1": {
+          "type": "object",
+          "description": "Spawn position for player 1",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": ["x", "y"]
+        },
+        "player_2": {
+          "type": "object",
+          "description": "Spawn position for player 2",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": ["x", "y"]
+        }
+      },
+      "required": ["player_1", "player_2"]
+    },
+    "camera": {
+      "type": "object",
+      "description": "Camera configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether camera should follow action"
+        },
+        "limit_left": {
+          "type": "number",
+          "description": "Camera left limit"
+        },
+        "limit_right": {
+          "type": "number",
+          "description": "Camera right limit"
+        },
+        "limit_top": {
+          "type": "number",
+          "description": "Camera top limit"
+        },
+        "limit_bottom": {
+          "type": "number",
+          "description": "Camera bottom limit"
+        }
+      },
+      "required": ["enabled", "limit_left", "limit_right", "limit_top", "limit_bottom"]
+    },
+    "hazards": {
+      "type": "array",
+      "description": "Optional hazards and environmental dangers",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Hazard identifier"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["spike", "fire", "moving_platform", "custom"],
+            "description": "Type of hazard"
+          },
+          "position": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              }
+            },
+            "required": ["x", "y"]
+          },
+          "size": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              }
+            },
+            "required": ["width", "height"]
+          },
+          "damage": {
+            "type": "integer",
+            "description": "Damage dealt by this hazard per hit"
+          }
+        },
+        "required": ["id", "type", "position", "size"]
+      }
+    }
+  },
+  "required": ["id", "name", "description", "boundaries", "spawn_points", "camera"],
+  "additionalProperties": false
+}

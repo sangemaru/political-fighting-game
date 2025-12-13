@@ -1,0 +1,38 @@
+{
+  "id": "default_battle",
+  "name": "Default Battle Configuration",
+  "stage": "arena_1",
+  "players": {
+    "player_1": {
+      "character": "dictator_1",
+      "spawn_point": "player_1"
+    },
+    "player_2": {
+      "character": "demagogue_1",
+      "spawn_point": "player_2"
+    }
+  },
+  "round_settings": {
+    "duration_seconds": 99.0,
+    "max_rounds": 3
+  },
+  "ui_layout": {
+    "p1_health_bar": {
+      "position": {"x": 20, "y": 20},
+      "anchor_left": 0.0,
+      "anchor_top": 0.0,
+      "size_percent": 0.35
+    },
+    "p2_health_bar": {
+      "position": {"x": -20, "y": 20},
+      "anchor_left": 1.0,
+      "anchor_top": 0.0,
+      "size_percent": 0.35
+    },
+    "timer": {
+      "position": {"x": 0.5, "y": 0.05},
+      "anchor_h": 0.5,
+      "anchor_v": 0.0
+    }
+  }
+}

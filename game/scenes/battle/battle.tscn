@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj2xf4wmpd7cx"]
+
+[ext_resource type="Script" path="res://game/scripts/battle/battle_scene.gd" id="1_ah5xh"]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_ah5xh")
+battle_config_path = "res://game/resources/battle_configs/default_battle.json"
+
+[node name="Fighters" type="Node2D" parent="."]

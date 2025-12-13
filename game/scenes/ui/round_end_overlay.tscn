@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://dq7wjhcpxe8gd"]
+
+[ext_resource type="Script" path="res://game/scripts/ui/round_end_overlay.gd"]
+
+[node name="RoundEndOverlay" type="CanvasLayer"]
+layer = 10
+script = ExtResource("Script_RoundEndOverlay")
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+modulate = Color(1, 1, 1, 0)
+
+[node name="ColorRect" type="ColorRect" parent="Panel"]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+color = Color(0, 0, 0, 0.7)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_left = 0.25
+anchors_top = 0.3
+anchors_right = 0.75
+anchors_bottom = 0.7
+alignment = 1
+
+[node name="WinnerLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "PLAYER 1 WINS!"
+horizontal_alignment = 1
+vertical_alignment = 1
+add_theme_font_size_override("font_size", 64)
+
+[node name="ConditionLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "K.O."
+horizontal_alignment = 1
+vertical_alignment = 1
+add_theme_font_size_override("font_size", 48)
+
+[node name="RoundScoreLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Round Score: 1 - 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+add_theme_font_size_override("font_size", 32)

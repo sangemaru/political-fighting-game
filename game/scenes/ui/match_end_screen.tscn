@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://bv8lxo3sshd4"]
+
+[ext_resource type="Script" path="res://game/scripts/ui/match_end_screen.gd"]
+
+[node name="MatchEndScreen" type="Control"]
+layout_mode = 3
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+script = ExtResource("Script_MatchEndScreen")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+modulate = Color(1, 1, 1, 0)
+
+[node name="ColorRect" type="ColorRect" parent="Panel"]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+color = Color(0, 0, 0, 0.9)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_left = 0.25
+anchors_top = 0.25
+anchors_right = 0.75
+anchors_bottom = 0.75
+alignment = 1
+
+[node name="WinnerLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "PLAYER 1 WINS THE MATCH!"
+horizontal_alignment = 1
+vertical_alignment = 1
+add_theme_font_size_override("font_size", 72)
+
+[node name="Spacer" type="Control" parent="Panel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+custom_minimum_size = Vector2(0, 60)
+
+[node name="RematchButton" type="Button" parent="Panel/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(150, 50)
+text = "Rematch"
+
+[node name="Spacer2" type="Control" parent="Panel/VBoxContainer/ButtonContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="MenuButton" type="Button" parent="Panel/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(150, 50)
+text = "Main Menu"

@@ -90,6 +90,11 @@ p2_special={
 ]
 }
 
+[autoload]
+
+GameManager="*res://game/scripts/core/game_manager.gd"
+SceneManager="*res://game/scripts/core/scene_manager.gd"
+
 [physics]
 
 common/physics_ticks_per_second=60

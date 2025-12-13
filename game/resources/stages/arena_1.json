@@ -1,0 +1,29 @@
+{
+  "id": "arena_1",
+  "name": "The Arena",
+  "description": "A simple, neutral arena where political combatants settle their disputes. No hazards, just two fighters and the stage.",
+  "boundaries": {
+    "left": 50,
+    "right": 1230,
+    "top": 0,
+    "bottom": 650
+  },
+  "spawn_points": {
+    "player_1": {
+      "x": 320,
+      "y": 650
+    },
+    "player_2": {
+      "x": 960,
+      "y": 650
+    }
+  },
+  "camera": {
+    "enabled": false,
+    "limit_left": 0,
+    "limit_right": 1280,
+    "limit_top": 0,
+    "limit_bottom": 720
+  },
+  "hazards": []
+}

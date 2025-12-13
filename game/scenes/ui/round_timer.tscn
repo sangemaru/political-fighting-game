@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://7pjt5r3p5r72"]
+
+[ext_resource type="Script" path="res://game/scripts/ui/round_timer.gd"]
+
+[node name="RoundTimer" type="Control"]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 0.15
+offset_top = 20.0
+offset_bottom = -20.0
+script = ExtResource("Script_RoundTimer")
+
+[node name="WarningPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_left = 0.25
+anchors_top = 0.0
+anchors_right = 0.75
+anchors_bottom = 1.0
+self_modulate = Color(0, 0, 0, 0)
+
+[node name="TimerLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
