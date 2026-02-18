@@ -10,6 +10,8 @@ var character_data: Dictionary = {}
 
 
 func _ready() -> void:
+	# BaseFighter._ready() must run first to initialize state machine and hurtbox
+	super._ready()
 	# Load character data from JSON
 	character_data = load_character_data()
 	initialize_character()
@@ -50,18 +52,21 @@ func initialize_character() -> void:
 		push_error("Character data not loaded")
 		return
 
-	# Set base stats
 	var base_stats = character_data.get("base_stats", {})
 
-	# These would be used by the battle system
-	var health = base_stats.get("health", 85)
-	var speed = base_stats.get("speed", 220)
-	var weight = base_stats.get("weight", 0.8)
-	var attack_power = base_stats.get("attack_power", 1.0)
-	var defense = base_stats.get("defense", 1.0)
+	# Apply stats to BaseFighter properties
+	self.max_health = base_stats.get("health", 85)
+	self.health = self.max_health  # Re-sync after BaseFighter._ready() used defaults
+	self.speed = base_stats.get("speed", 220)
+	self.weight = base_stats.get("weight", 0.8)
 
-	# Initialize position and name
 	name = character_data.get("name", "The Demagogue")
+
+	# Placeholder visual: green for Demagogue
+	if sprite:
+		var img = Image.create(60, 80, false, Image.FORMAT_RGBA8)
+		img.fill(Color(0.2, 0.8, 0.4))
+		sprite.texture = ImageTexture.create_from_image(img)
 
 
 ## Get a specific move by ID
@@ -78,6 +83,13 @@ func get_move(move_id: String) -> Dictionary:
 ## Get all available moves
 func get_all_moves() -> Array:
 	return character_data.get("moves", [])
+
+
+## Return move data for the current attack (used by FighterStateMachine)
+func get_move_data(is_special: bool) -> Dictionary:
+	if is_special:
+		return get_move("special")
+	return get_move("light_attack")
 
 
 ## Execute a move

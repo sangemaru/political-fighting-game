@@ -3,6 +3,7 @@ extends Node
 ## Fighter State Machine
 ## Manages fighter states: IDLE, WALKING, JUMPING, ATTACKING, HITSTUN, KNOCKDOWN, DEAD
 ## Each state has enter/exit/update methods
+## Input is provided externally via set_input() - do NOT read Input directly
 
 class_name FighterStateMachine
 
@@ -27,6 +28,12 @@ var _hitstun_frames: int = 0  # Frame-based hitstun
 var _hitstun_frame_counter: int = 0
 var _knockdown_timer: float = 0.0
 
+## External input state (set by battle_scene via set_input)
+var input_direction: float = 0.0
+var input_vertical: float = 0.0
+var input_attack: bool = false
+var input_special: bool = false
+
 ## Constants
 const HITSTUN_DURATION: float = 0.3
 const KNOCKDOWN_DURATION: float = 0.5
@@ -36,6 +43,22 @@ const FRAMES_PER_SECOND: int = 60  # 60 FPS
 func _init(fighter_ref: BaseFighter) -> void:
 	fighter = fighter_ref
 	_initialize_states()
+
+
+## Set input externally (called by battle_scene each frame)
+func set_input(direction: float, vertical: float, attack: bool, special: bool) -> void:
+	input_direction = direction
+	input_vertical = vertical
+	input_attack = attack
+	input_special = special
+
+
+## Clear input (called after processing or when fighter shouldn't receive input)
+func clear_input() -> void:
+	input_direction = 0.0
+	input_vertical = 0.0
+	input_attack = false
+	input_special = false
 
 
 ## Initialize all state handlers
@@ -94,7 +117,7 @@ func set_hitstun_frames(frames: int) -> void:
 
 
 # ============================================================
-# STATE CLASSES
+# STATE CLASSES - All read input from fsm.input_* fields
 # ============================================================
 
 class _IdleState:
@@ -107,26 +130,26 @@ class _IdleState:
 		fsm.fighter.velocity.x = 0
 
 	func _process_state(delta: float) -> void:
-		# Check input for transitions
-		var input_direction = Input.get_axis("ui_left", "ui_right")
-
 		# Check for blocking first
-		if _is_blocking_input(input_direction):
+		if _is_blocking_input(fsm.input_direction):
 			fsm.change_state(FighterStateMachine.State.BLOCKING)
 			return
 
-		if input_direction != 0:
+		if fsm.input_direction != 0:
 			fsm.change_state(FighterStateMachine.State.WALKING)
 
-		if Input.is_action_just_pressed("ui_up"):
+		if fsm.input_vertical < 0:  # Up
 			fsm.change_state(FighterStateMachine.State.JUMPING)
 
-	func _is_blocking_input(input_direction: float) -> bool:
-		if fsm.fighter.opponent_ref == null or input_direction == 0:
+		if fsm.input_attack or fsm.input_special:
+			fsm.change_state(FighterStateMachine.State.ATTACKING)
+
+	func _is_blocking_input(direction: float) -> bool:
+		if fsm.fighter.opponent_ref == null or direction == 0:
 			return false
 		var to_opponent = fsm.fighter.opponent_ref.global_position - fsm.fighter.global_position
 		var direction_to_opponent = sign(to_opponent.x)
-		return sign(input_direction) == -direction_to_opponent
+		return sign(direction) == -direction_to_opponent
 
 	func _physics_process_state(delta: float) -> void:
 		# Maintain velocity on ground
@@ -144,31 +167,32 @@ class _WalkingState:
 		pass
 
 	func _process_state(delta: float) -> void:
-		var input_direction = Input.get_axis("ui_left", "ui_right")
-
 		# Check for blocking first
-		if _is_blocking_input(input_direction):
+		if _is_blocking_input(fsm.input_direction):
 			fsm.change_state(FighterStateMachine.State.BLOCKING)
 			return
 
 		# Handle movement
-		if input_direction != 0:
-			fsm.fighter.set_facing_direction(input_direction)
-			fsm.fighter.velocity.x = input_direction * fsm.fighter.speed
+		if fsm.input_direction != 0:
+			fsm.fighter.set_facing_direction(fsm.input_direction)
+			fsm.fighter.velocity.x = fsm.input_direction * fsm.fighter.speed
 		else:
 			# Return to idle if no input
 			fsm.change_state(FighterStateMachine.State.IDLE)
 
 		# Jump transition
-		if Input.is_action_just_pressed("ui_up"):
+		if fsm.input_vertical < 0:  # Up
 			fsm.change_state(FighterStateMachine.State.JUMPING)
 
-	func _is_blocking_input(input_direction: float) -> bool:
-		if fsm.fighter.opponent_ref == null or input_direction == 0:
+		if fsm.input_attack or fsm.input_special:
+			fsm.change_state(FighterStateMachine.State.ATTACKING)
+
+	func _is_blocking_input(direction: float) -> bool:
+		if fsm.fighter.opponent_ref == null or direction == 0:
 			return false
 		var to_opponent = fsm.fighter.opponent_ref.global_position - fsm.fighter.global_position
 		var direction_to_opponent = sign(to_opponent.x)
-		return sign(input_direction) == -direction_to_opponent
+		return sign(direction) == -direction_to_opponent
 
 	func _physics_process_state(delta: float) -> void:
 		pass
@@ -189,16 +213,14 @@ class _JumpingState:
 
 	func _process_state(delta: float) -> void:
 		# Handle air movement
-		var input_direction = Input.get_axis("ui_left", "ui_right")
-		if input_direction != 0:
-			fsm.fighter.set_facing_direction(input_direction)
-			fsm.fighter.velocity.x = input_direction * fsm.fighter.speed * 0.8  # 80% speed in air
+		if fsm.input_direction != 0:
+			fsm.fighter.set_facing_direction(fsm.input_direction)
+			fsm.fighter.velocity.x = fsm.input_direction * fsm.fighter.speed * 0.8  # 80% speed in air
 
 	func _physics_process_state(delta: float) -> void:
 		# Return to idle/walking when landing
 		if fsm.fighter.is_on_floor():
-			var input_direction = Input.get_axis("ui_left", "ui_right")
-			if input_direction != 0:
+			if fsm.input_direction != 0:
 				fsm.change_state(FighterStateMachine.State.WALKING)
 			else:
 				fsm.change_state(FighterStateMachine.State.IDLE)
@@ -207,28 +229,95 @@ class _JumpingState:
 class _AttackingState:
 	var fsm: FighterStateMachine
 	var attack_timer: float = 0.0
-	var attack_duration: float = 0.5  # Will be set based on move data
+	var attack_duration: float = 0.5
+	var is_special: bool = false
+	var frame_counter: int = 0
+	var startup_frames: int = 3
+	var active_frames: int = 3
+	var recovery_frames: int = 5
+	var current_hitbox: Hitbox = null
 
 	func _init(fsm_ref: FighterStateMachine) -> void:
 		fsm = fsm_ref
 
 	func _enter_state() -> void:
 		attack_timer = 0.0
+		frame_counter = 0
 		fsm.fighter.velocity.x = 0
+		is_special = fsm.input_special
+
+		# Get move data from character
+		var move_data = fsm.fighter.get_move_data(is_special)
+		startup_frames = move_data.get("startup_frames", 3)
+		active_frames = move_data.get("active_frames", 3)
+		recovery_frames = move_data.get("recovery_frames", 5)
+		attack_duration = (startup_frames + active_frames + recovery_frames) / 60.0
+
+		# Create hitbox (inactive until startup completes)
+		_create_hitbox(move_data)
+
+	func _create_hitbox(move_data: Dictionary) -> void:
+		if move_data.is_empty():
+			return
+
+		current_hitbox = Hitbox.new()
+		current_hitbox.name = "AttackHitbox"
+
+		var shape_node = CollisionShape2D.new()
+		var rect_shape = RectangleShape2D.new()
+		var hitbox_def = move_data.get("hitbox", {})
+		rect_shape.size = Vector2(
+			hitbox_def.get("width", 60),
+			hitbox_def.get("height", 60)
+		)
+		shape_node.shape = rect_shape
+
+		# Offset hitbox in the direction the fighter is facing
+		var offset_x = hitbox_def.get("offset_x", 40) * fsm.fighter.facing_direction
+		var offset_y = hitbox_def.get("offset_y", 0)
+		shape_node.position = Vector2(offset_x, offset_y)
+		current_hitbox.add_child(shape_node)
+
+		var damage = move_data.get("damage", 8)
+		var knockback = move_data.get("knockback", 100)
+		var hitstun = move_data.get("active_frames", 10)
+		var attack_id = "atk_%d_%d" % [fsm.fighter.player_id, frame_counter]
+		current_hitbox.set_hitbox_data(damage, knockback, hitstun, fsm.fighter, attack_id)
+
+		fsm.fighter.add_child(current_hitbox)
+		# Starts inactive; activated once startup window elapses
 
 	func _process_state(delta: float) -> void:
 		attack_timer += delta
-		# Attack ends when timer exceeds duration
+		frame_counter += 1
+
+		# Activate hitbox when startup window ends
+		if frame_counter == startup_frames and current_hitbox != null:
+			current_hitbox.activate()
+
+		# Deactivate hitbox when active window ends
+		if frame_counter == startup_frames + active_frames and current_hitbox != null:
+			current_hitbox.deactivate()
+
 		if attack_timer >= attack_duration:
 			_exit_attack()
 
 	func _physics_process_state(delta: float) -> void:
 		pass
 
+	func _exit_state() -> void:
+		# Clean up hitbox if interrupted (e.g. by hitstun)
+		if current_hitbox != null:
+			current_hitbox.queue_free()
+			current_hitbox = null
+
 	func _exit_attack() -> void:
-		# Return to appropriate state based on ground status
-		var input_direction = Input.get_axis("ui_left", "ui_right")
-		if input_direction != 0:
+		# Clean up hitbox
+		if current_hitbox != null:
+			current_hitbox.queue_free()
+			current_hitbox = null
+		# Return to appropriate state
+		if fsm.input_direction != 0:
 			fsm.change_state(FighterStateMachine.State.WALKING)
 		else:
 			fsm.change_state(FighterStateMachine.State.IDLE)
@@ -348,11 +437,6 @@ class _BlockingState:
 		fsm.fighter.velocity.x = 0
 
 	func _is_blocking_input() -> bool:
-		# Blocking means holding away from opponent
-		# For now, just check if holding left/right
-		# (BaseFighter should set this properly based on opponent position)
-		var input_direction = Input.get_axis("ui_left", "ui_right")
-
 		# If no opponent ref, can't determine block direction
 		if fsm.fighter.opponent_ref == null:
 			return false
@@ -362,4 +446,4 @@ class _BlockingState:
 		var direction_to_opponent = sign(to_opponent.x)
 
 		# Blocking if holding opposite direction
-		return sign(input_direction) == -direction_to_opponent and input_direction != 0
+		return sign(fsm.input_direction) == -direction_to_opponent and fsm.input_direction != 0

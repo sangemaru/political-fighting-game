@@ -1,18 +1,16 @@
 extends BaseFighter
 
-## The Generalissimo Character Script
-## A slow, heavy-hitting military dictator with tank-like properties
+## The Propagandist Character Script
+## A fast, fragile media manipulator with high attack power and deceptive moves
 
-class_name Dictator1
+class_name Propagandist1
 
 # Character data loaded from JSON
 var character_data: Dictionary = {}
 
 
 func _ready() -> void:
-	# BaseFighter._ready() must run first to initialize state machine and hurtbox
 	super._ready()
-	# Load character data from JSON
 	character_data = load_character_data()
 	initialize_character()
 
@@ -29,7 +27,7 @@ func _physics_process(delta: float) -> void:
 
 ## Load character data from JSON file
 func load_character_data() -> Dictionary:
-	var file_path = "res://game/resources/characters/dictator_1.json"
+	var file_path = "res://game/resources/characters/propagandist_1.json"
 	var file = FileAccess.open(file_path, FileAccess.READ)
 
 	if file == null:
@@ -54,18 +52,17 @@ func initialize_character() -> void:
 
 	var base_stats = character_data.get("base_stats", {})
 
-	# Apply stats to BaseFighter properties
-	self.max_health = base_stats.get("health", 100)
-	self.health = self.max_health  # Re-sync after BaseFighter._ready() used defaults
-	self.speed = base_stats.get("speed", 180)
-	self.weight = base_stats.get("weight", 1.2)
+	self.max_health = base_stats.get("health", 80)
+	self.health = self.max_health
+	self.speed = base_stats.get("speed", 240)
+	self.weight = base_stats.get("weight", 0.7)
 
-	name = character_data.get("name", "The Generalissimo")
+	name = character_data.get("name", "The Propagandist")
 
-	# Placeholder visual: red-brown for Generalissimo
+	# Placeholder visual: purple for Propagandist
 	if sprite:
 		var img = Image.create(60, 80, false, Image.FORMAT_RGBA8)
-		img.fill(Color(0.7, 0.2, 0.1))
+		img.fill(Color(0.6, 0.1, 0.8))
 		sprite.texture = ImageTexture.create_from_image(img)
 
 
@@ -103,7 +100,7 @@ func execute_move(move_id: String) -> Dictionary:
 
 	# Calculate actual damage with modifiers
 	var base_damage = move.get("damage", 0)
-	var actual_damage = int(base_damage * character_data.get("base_stats", {}).get("attack_power", 1.2))
+	var actual_damage = int(base_damage * character_data.get("base_stats", {}).get("attack_power", 1.3))
 
 	# Get hitbox data
 	var hitbox = move.get("hitbox", {})
@@ -125,43 +122,43 @@ func execute_move(move_id: String) -> Dictionary:
 
 
 ## Move frame data reference for combat system
-## Light Attack (Command Jab)
+## Light Attack (Fake News)
 func get_light_attack_data() -> Dictionary:
 	return {
-		"name": "Command Jab",
-		"damage": 8,
-		"startup_frames": 3,
-		"active_frames": 2,
-		"recovery_frames": 5,
-		"total_frames": 10,
-		"knockback": 50
+		"name": "Fake News",
+		"damage": 5,
+		"startup_frames": 2,
+		"active_frames": 3,
+		"recovery_frames": 4,
+		"total_frames": 9,
+		"knockback": 60
 	}
 
 
-## Heavy Attack (Overhead Slam)
+## Heavy Attack (Spin Cycle)
 func get_heavy_attack_data() -> Dictionary:
 	return {
-		"name": "Overhead Slam",
-		"damage": 15,
-		"startup_frames": 8,
-		"active_frames": 3,
-		"recovery_frames": 12,
-		"total_frames": 23,
-		"knockback": 180
+		"name": "Spin Cycle",
+		"damage": 14,
+		"startup_frames": 5,
+		"active_frames": 5,
+		"recovery_frames": 8,
+		"total_frames": 18,
+		"knockback": 160
 	}
 
 
-## Special Attack (Propaganda Shout)
+## Special Attack (Cancel Culture)
 func get_special_attack_data() -> Dictionary:
 	return {
-		"name": "Propaganda Shout",
-		"damage": 5,
-		"startup_frames": 10,
-		"active_frames": 5,
-		"recovery_frames": 15,
-		"total_frames": 30,
-		"knockback": 200,
-		"effect": "pushback"
+		"name": "Cancel Culture",
+		"damage": 8,
+		"startup_frames": 7,
+		"active_frames": 6,
+		"recovery_frames": 10,
+		"total_frames": 23,
+		"knockback": 100,
+		"effect": "debuff"
 	}
 
 
@@ -169,9 +166,9 @@ func get_special_attack_data() -> Dictionary:
 func get_stats() -> Dictionary:
 	var base_stats = character_data.get("base_stats", {})
 	return {
-		"health": base_stats.get("health", 100),
-		"speed": base_stats.get("speed", 180),
-		"weight": base_stats.get("weight", 1.2),
-		"attack_power": base_stats.get("attack_power", 1.2),
-		"defense": base_stats.get("defense", 1.0)
+		"health": base_stats.get("health", 80),
+		"speed": base_stats.get("speed", 240),
+		"weight": base_stats.get("weight", 0.7),
+		"attack_power": base_stats.get("attack_power", 1.3),
+		"defense": base_stats.get("defense", 0.8)
 	}

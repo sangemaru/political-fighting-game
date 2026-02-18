@@ -41,6 +41,8 @@ func _ready() -> void:
 	health = max_health
 	_initialize_state_machine()
 	_setup_physics_layer()
+	_create_hurtbox()
+	_create_placeholder_visual()
 
 
 func _process(delta: float) -> void:
@@ -79,9 +81,37 @@ func _initialize_state_machine() -> void:
 
 ## Setup physics layer (characters on layer 1)
 func _setup_physics_layer() -> void:
-	physics_layer = 1
 	collision_layer = 1
 	collision_mask = 1
+
+
+## Create hurtbox so character can receive hits
+func _create_hurtbox() -> void:
+	hurtbox = Hurtbox.new()
+	hurtbox.name = "Hurtbox"
+	hurtbox.set_fighter_owner(self)
+
+	var shape_node = CollisionShape2D.new()
+	var rect_shape = RectangleShape2D.new()
+	rect_shape.size = Vector2(50, 80)
+	shape_node.shape = rect_shape
+	hurtbox.add_child(shape_node)
+	add_child(hurtbox)
+
+
+## Create a colored placeholder texture if sprite has no texture assigned
+func _create_placeholder_visual() -> void:
+	if sprite == null or sprite.texture != null:
+		return
+	var img = Image.create(60, 80, false, Image.FORMAT_RGBA8)
+	img.fill(Color.WHITE)
+	sprite.texture = ImageTexture.create_from_image(img)
+
+
+## Virtual: return move data dict for the current attack or special
+## Subclasses override to provide JSON-loaded move data
+func get_move_data(is_special: bool) -> Dictionary:
+	return {}
 
 
 ## Take damage and update health
@@ -149,5 +179,5 @@ func get_current_state() -> int:
 
 
 ## Get current velocity (for external systems)
-func get_velocity() -> Vector2:
+func get_current_velocity() -> Vector2:
 	return velocity

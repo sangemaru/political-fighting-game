@@ -29,9 +29,9 @@ func _ready() -> void:
 
 	area_entered.connect(_on_area_entered)
 
-	# Hitbox starts inactive
+	# Hitbox starts inactive - call activate() to enable during ACTIVE frames
 	monitorable = true
-	monitoring = true
+	monitoring = false
 
 
 ## Set hitbox data from attack definition
