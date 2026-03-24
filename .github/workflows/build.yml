@@ -36,9 +36,7 @@ jobs:
         run: mkdir -v -p builds/web
 
       - name: Build Web
-        run: |
-          cd game
-          godot --headless --verbose --export-release "Web" ../builds/web/index.html
+        run: godot --headless --verbose --export-release "Web" builds/web/index.html
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -52,7 +50,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./builds/web
-          cname: '' # Optional: Add custom domain if you have one
 
   export-windows:
     name: Windows Export
@@ -74,9 +71,7 @@ jobs:
         run: mkdir -v -p builds/windows
 
       - name: Build Windows
-        run: |
-          cd game
-          godot --headless --verbose --export-release "Windows Desktop" ../builds/windows/${EXPORT_NAME}.exe
+        run: godot --headless --verbose --export-release "Windows Desktop" builds/windows/${EXPORT_NAME}.exe
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -104,9 +99,7 @@ jobs:
         run: mkdir -v -p builds/linux
 
       - name: Build Linux
-        run: |
-          cd game
-          godot --headless --verbose --export-release "Linux" ../builds/linux/${EXPORT_NAME}.x86_64
+        run: godot --headless --verbose --export-release "Linux" builds/linux/${EXPORT_NAME}.x86_64
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -134,67 +127,10 @@ jobs:
         run: mkdir -v -p builds/macos
 
       - name: Build macOS
-        run: |
-          cd game
-          godot --headless --verbose --export-release "macOS" ../builds/macos/${EXPORT_NAME}.zip
+        run: godot --headless --verbose --export-release "macOS" builds/macos/${EXPORT_NAME}.zip
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-build
           path: builds/macos/
-
-  deploy-itch:
-    name: Deploy to itch.io
-    runs-on: ubuntu-latest
-    needs: [export-web, export-windows, export-linux, export-macos]
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
-    steps:
-      - name: Download Web Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: web-build
-          path: builds/web
-
-      - name: Download Windows Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: windows-build
-          path: builds/windows
-
-      - name: Download Linux Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: linux-build
-          path: builds/linux
-
-      - name: Download macOS Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: macos-build
-          path: builds/macos
-
-      - name: Install Butler
-        run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler -V
-
-      - name: Login to itch.io
-        env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-        run: ./butler login
-
-      - name: Push to itch.io
-        env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-        run: |
-          # TODO: Replace 'username/game-name' with your actual itch.io username and game slug
-          # Example:
-          # ./butler push builds/web/ blackthorne/political-fighting-game:web --userversion ${{ github.sha }}
-          # ./butler push builds/windows/ blackthorne/political-fighting-game:windows --userversion ${{ github.sha }}
-          # ./butler push builds/linux/ blackthorne/political-fighting-game:linux --userversion ${{ github.sha }}
-          # ./butler push builds/macos/ blackthorne/political-fighting-game:macos --userversion ${{ github.sha }}
-          echo "itch.io deployment not configured yet. See itch/embed_settings.md for setup instructions."
-          echo "To enable: Replace username/game-name in this workflow and add BUTLER_API_KEY to GitHub secrets."
