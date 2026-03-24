@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwyqmm14qrstt"]
+[gd_scene load_steps=3 format=3 uid="uid://bwyqmm14qrstt"]
 
 [ext_resource type="Script" path="res://game/scripts/characters/demagogue_1.gd" id="1_23qww"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_demagogue"]
+size = Vector2(60, 80)
 
 [node name="Demagogue1" type="CharacterBody2D"]
 script = ExtResource("1_23qww")
@@ -8,12 +11,9 @@ script = ExtResource("1_23qww")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 0)
 scale = Vector2(1.5, 2)
-color = Color(0.2, 0.8, 0.4, 1)
-debug_color = Color(0.2, 0.8, 0.4, 0.4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0)
-shape = RectangleShape2D(size=Vector2(60, 80))
+shape = SubResource("RectangleShape2D_demagogue")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anim_list = PackedStringArray("idle", "walk", "jump", "light_attack", "heavy_attack", "special", "hitstun", "knockdown")

@@ -81,7 +81,7 @@ func _on_character_select_pressed() -> void:
 	AudioManager.play_sfx("menu_confirm")
 	print("[VictoryScreen] Returning to character select")
 	visible = false
-	SceneManager.change_scene("res://game/scenes/menus/character_select.tscn")
+	SceneManager.goto_scene("res://game/scenes/menus/character_select.tscn")
 
 
 ## Return to main menu
@@ -89,7 +89,7 @@ func _on_main_menu_pressed() -> void:
 	AudioManager.play_sfx("menu_confirm")
 	print("[VictoryScreen] Returning to main menu")
 	visible = false
-	SceneManager.change_scene("res://game/scenes/menus/main_menu.tscn")
+	SceneManager.goto_scene("res://game/scenes/menus/main_menu.tscn")
 
 
 ## Handle match_won signal from GameManager

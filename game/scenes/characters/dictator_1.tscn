@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8xmq2q1d9f8e"]
+[gd_scene load_steps=3 format=3 uid="uid://c8xmq2q1d9f8e"]
 
 [ext_resource type="Script" path="res://game/scripts/characters/dictator_1.gd" id="1_g7k9m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dictator"]
+size = Vector2(60, 100)
 
 [node name="Dictator1" type="CharacterBody2D"]
 script = ExtResource("1_g7k9m")
@@ -8,12 +11,9 @@ script = ExtResource("1_g7k9m")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 0)
 scale = Vector2(2, 2.2)
-color = Color(0.4, 0.2, 0.2, 1)
-debug_color = Color(0.4, 0.2, 0.2, 0.4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0)
-shape = RectangleShape2D(size=Vector2(60, 100))
+shape = SubResource("RectangleShape2D_dictator")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anim_list = PackedStringArray("idle", "walk", "jump", "light_attack", "heavy_attack", "special", "hitstun", "knockdown")

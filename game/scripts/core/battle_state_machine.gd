@@ -122,7 +122,7 @@ func _get_player_health(player: Node) -> float:
 	if player == null:
 		return 0.0
 
-	if player.has_property("health"):
+	if "health" in player:
 		return player.health
 	elif player.has_method("get_health"):
 		return player.get_health()

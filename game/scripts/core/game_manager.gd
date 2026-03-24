@@ -3,7 +3,6 @@
 ##
 ## Autoload this as "GameManager" in Project Settings > Autoload
 
-class_name GameManager
 extends Node
 
 ## Game state enumeration
@@ -39,6 +38,10 @@ var is_paused: bool = false
 var rounds_won: Dictionary = {1: 0, 2: 0}  # {player_id: rounds_won}
 var rounds_to_win: int = 2  # Best of 3 requires 2 wins
 var match_winner: int = 0  # 0 = no winner yet, 1 = P1, 2 = P2
+
+## Character/stage selection persistence (F44, F45)
+var selected_characters: Dictionary = {1: "", 2: ""}  # {player_id: character_id}
+var selected_stage: String = "arena_1"
 
 ## Deterministic frame counter for battle
 var battle_frame: int = 0

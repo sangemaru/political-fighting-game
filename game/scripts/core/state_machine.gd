@@ -12,8 +12,8 @@ extends Node
 ## Emitted when state changes (old_state, new_state)
 signal state_changed(old_state: String, new_state: String)
 
-## Current state enum value
-var current_state: int = -1
+## Current state name
+var current_state: String = ""
 
 ## Dictionary of state names to state objects
 var _states: Dictionary = {}
@@ -27,10 +27,14 @@ func add_state(state_name: String, state_obj: Object) -> void:
 	_states[state_name] = state_obj
 
 
-## Change to a new state
-## Returns true if successful, false if state doesn't exist
-func change_state(new_state: int) -> bool:
+## Change to a new state by name
+## Returns true if successful, false if state doesn't exist or is the same
+func change_state(new_state: String) -> bool:
 	if new_state == current_state:
+		return false
+
+	if not _states.has(new_state):
+		push_error("StateMachine: state not found: %s" % new_state)
 		return false
 
 	var old_state = current_state
@@ -41,7 +45,7 @@ func change_state(new_state: int) -> bool:
 
 	# Set new state
 	current_state = new_state
-	_current_state_obj = null
+	_current_state_obj = _states[new_state]
 
 	# Enter new state
 	if _current_state_obj != null and _current_state_obj.has_method("_enter_state"):
@@ -56,8 +60,8 @@ func get_current_state() -> Object:
 	return _current_state_obj
 
 
-## Get the current state enum value
-func get_current_state_value() -> int:
+## Get the current state name
+func get_current_state_name() -> String:
 	return current_state
 
 

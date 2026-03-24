@@ -60,21 +60,21 @@ func _ready() -> void:
 func _load_audio_library() -> void:
 	"""Load all audio files from resources/audio/"""
 	# SFX - Hit sounds
-	_register_sfx("light_hit", "res://resources/audio/sfx/light_hit.wav")
-	_register_sfx("heavy_hit", "res://resources/audio/sfx/heavy_hit.wav")
-	_register_sfx("block", "res://resources/audio/sfx/block.wav")
-	_register_sfx("whiff", "res://resources/audio/sfx/whiff.wav")
+	_register_sfx("light_hit", "res://game/resources/audio/sfx/light_hit.wav")
+	_register_sfx("heavy_hit", "res://game/resources/audio/sfx/heavy_hit.wav")
+	_register_sfx("block", "res://game/resources/audio/sfx/block.wav")
+	_register_sfx("whiff", "res://game/resources/audio/sfx/whiff.wav")
 
 	# SFX - Menu sounds
-	_register_sfx("menu_select", "res://resources/audio/sfx/menu_select.wav")
-	_register_sfx("menu_confirm", "res://resources/audio/sfx/menu_confirm.wav")
-	_register_sfx("menu_back", "res://resources/audio/sfx/menu_back.wav")
-	_register_sfx("menu_hover", "res://resources/audio/sfx/menu_hover.wav")
+	_register_sfx("menu_select", "res://game/resources/audio/sfx/menu_select.wav")
+	_register_sfx("menu_confirm", "res://game/resources/audio/sfx/menu_confirm.wav")
+	_register_sfx("menu_back", "res://game/resources/audio/sfx/menu_back.wav")
+	_register_sfx("menu_hover", "res://game/resources/audio/sfx/menu_hover.wav")
 
 	# Music tracks
-	_register_music("menu_theme", "res://resources/audio/music/menu_theme.ogg")
-	_register_music("battle_theme", "res://resources/audio/music/battle_theme.ogg")
-	_register_music("victory_theme", "res://resources/audio/music/victory_theme.ogg")
+	_register_music("menu_theme", "res://game/resources/audio/music/menu_theme.ogg")
+	_register_music("battle_theme", "res://game/resources/audio/music/battle_theme.ogg")
+	_register_music("victory_theme", "res://game/resources/audio/music/victory_theme.ogg")
 
 func _register_sfx(sound_name: String, path: String) -> void:
 	"""Register a sound effect. Fails silently if file doesn't exist."""
@@ -182,11 +182,15 @@ func stop_music(fadeout: bool = true) -> void:
 
 func set_sfx_volume(volume_linear: float) -> void:
 	"""Set SFX volume (0.0 to 1.0)."""
+	if sfx_bus_index < 0:
+		return
 	var volume_db = linear_to_db(volume_linear) if volume_linear > 0.0 else -80.0
 	AudioServer.set_bus_volume_db(sfx_bus_index, volume_db)
 
 func set_music_volume(volume_linear: float) -> void:
 	"""Set Music volume (0.0 to 1.0)."""
+	if music_bus_index < 0:
+		return
 	var volume_db = linear_to_db(volume_linear) if volume_linear > 0.0 else -80.0
 	AudioServer.set_bus_volume_db(music_bus_index, volume_db)
 

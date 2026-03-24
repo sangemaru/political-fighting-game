@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bn87p4kql2xv3"]
 
-[ext_resource type="Script" path="res://scripts/ui/combo_counter.gd" id="1_7qc2k"]
+[ext_resource type="Script" path="res://game/scripts/ui/combo_counter.gd" id="1_7qc2k"]
 
 [node name="ComboCounter" type="Control"]
 layout_mode = 3

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bmjhp4k4cpfb2"]
 
-[ext_resource type="Script" path="res://game/scripts/ui/health_bar.gd"]
+[ext_resource type="Script" path="res://game/scripts/ui/health_bar.gd" id="1_hbar"]
 
 [node name="HealthBar" type="Control"]
 layout_mode = 1
@@ -12,7 +12,7 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = -20.0
 offset_bottom = -20.0
-script = ExtResource("Script_HealthBar")
+script = ExtResource("1_hbar")
 
 [node name="HealthBarBG" type="Panel" parent="."]
 layout_mode = 1

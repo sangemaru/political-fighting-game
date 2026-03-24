@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bv8lxo3sshd4"]
 
-[ext_resource type="Script" path="res://game/scripts/ui/match_end_screen.gd"]
+[ext_resource type="Script" path="res://game/scripts/ui/match_end_screen.gd" id="1_mend"]
 
 [node name="MatchEndScreen" type="Control"]
 layout_mode = 3
@@ -8,7 +8,7 @@ anchors_left = 0.0
 anchors_top = 0.0
 anchors_right = 1.0
 anchors_bottom = 1.0
-script = ExtResource("Script_MatchEndScreen")
+script = ExtResource("1_mend")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

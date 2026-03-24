@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkq8r3m5v2n1a"]
+
+[ext_resource type="Script" path="res://game/scripts/characters/oligarch_1.gd" id="1_o4k7p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oligarch"]
+size = Vector2(70, 110)
+
+[node name="Oligarch1" type="CharacterBody2D"]
+script = ExtResource("1_o4k7p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 0)
+scale = Vector2(2.2, 2.4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_oligarch")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

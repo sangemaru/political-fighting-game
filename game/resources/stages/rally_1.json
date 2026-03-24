@@ -1,0 +1,29 @@
+{
+  "id": "rally_1",
+  "name": "The Rally",
+  "description": "An outdoor political rally with a roaring crowd. A central raised stage platform offers a tactical advantage, while the flat ground on either side keeps the action grounded.",
+  "boundaries": {
+    "left": 50,
+    "right": 1230,
+    "top": 0,
+    "bottom": 650
+  },
+  "spawn_points": {
+    "player_1": {
+      "x": 320,
+      "y": 650
+    },
+    "player_2": {
+      "x": 960,
+      "y": 650
+    }
+  },
+  "camera": {
+    "enabled": false,
+    "limit_left": 0,
+    "limit_right": 1280,
+    "limit_top": 0,
+    "limit_bottom": 720
+  },
+  "hazards": []
+}

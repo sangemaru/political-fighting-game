@@ -27,3 +27,8 @@ __pycache__/
 # OS specific
 Thumbs.db
 .DS_Store
+
+# Local dev artifacts
+.claude/
+.playwright-mcp/
+playtest-screenshots/

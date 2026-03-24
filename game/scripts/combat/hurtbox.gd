@@ -24,7 +24,7 @@ func _ready() -> void:
 
 
 ## Set owner fighter reference
-func set_owner(fighter: BaseFighter) -> void:
+func set_fighter_owner(fighter: BaseFighter) -> void:
 	owner_fighter = fighter
 
 

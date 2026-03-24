@@ -1,0 +1,62 @@
+{
+  "id": "propagandist_1",
+  "name": "The Propagandist",
+  "description": "A sneaky media manipulator and spin doctor who controls the narrative. Extremely fast with high attack power but fragile health and poor defense. Relies on speed and deception to overwhelm opponents before they can land a hit.",
+  "base_stats": {
+    "health": 80,
+    "speed": 240,
+    "weight": 0.7,
+    "attack_power": 1.3,
+    "defense": 0.8
+  },
+  "moves": [
+    {
+      "id": "light_attack",
+      "name": "Fake News",
+      "input": "ATTACK",
+      "damage": 5,
+      "startup_frames": 2,
+      "active_frames": 3,
+      "recovery_frames": 4,
+      "knockback": 60,
+      "hitbox": {
+        "offset_x": 35,
+        "offset_y": -5,
+        "width": 50,
+        "height": 30
+      }
+    },
+    {
+      "id": "heavy_attack",
+      "name": "Spin Cycle",
+      "input": "DOWN + ATTACK",
+      "damage": 14,
+      "startup_frames": 5,
+      "active_frames": 5,
+      "recovery_frames": 8,
+      "knockback": 160,
+      "hitbox": {
+        "offset_x": 0,
+        "offset_y": -15,
+        "width": 70,
+        "height": 70
+      }
+    },
+    {
+      "id": "special",
+      "name": "Cancel Culture",
+      "input": "DOWN, DOWN + ATTACK",
+      "damage": 8,
+      "startup_frames": 7,
+      "active_frames": 6,
+      "recovery_frames": 10,
+      "knockback": 100,
+      "hitbox": {
+        "offset_x": 0,
+        "offset_y": -20,
+        "width": 110,
+        "height": 90
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/scripts/ui/input_display.gd" id="1_input_display"]
+
+[node name="InputDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+custom_minimum_size = Vector2(160, 120)
+script = ExtResource("1_input_display")

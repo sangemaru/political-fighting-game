@@ -4,7 +4,6 @@
 ## Usage:
 ##   SceneManager.goto_scene("res://scenes/menu.tscn")
 
-class_name SceneManager
 extends Node
 
 ## Fade animation duration
@@ -25,8 +24,10 @@ var _is_transitioning: bool = false
 
 
 func _ready() -> void:
+	print("[SceneManager] _ready() called")
 	_setup_fade_canvas()
 	_current_scene = get_tree().root.get_child(get_tree().root.get_child_count() - 1)
+	print("[SceneManager] Current scene: %s" % (_current_scene.name if _current_scene else "null"))
 
 
 ## Setup fade overlay canvas

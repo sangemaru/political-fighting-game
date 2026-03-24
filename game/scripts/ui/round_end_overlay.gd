@@ -60,9 +60,14 @@ func _process(delta: float) -> void:
 
 
 ## Called when round ends
-func _on_round_ended(winner: String) -> void:
-	winner_name = winner
-	show_overlay(winner)
+func _on_round_ended(winner_id: int) -> void:
+	var name := "DRAW"
+	if winner_id == 1:
+		name = "Player 1"
+	elif winner_id == 2:
+		name = "Player 2"
+	winner_name = name
+	show_overlay(name)
 
 
 ## Show the overlay with result

@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mod Manifest Schema",
+  "description": "Manifest format for mods in the Political Fighting Game",
+  "type": "object",
+  "properties": {
+    "mod_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "description": "Unique identifier for the mod (lowercase, underscores only)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version (e.g., 1.0.0)"
+    },
+    "author": {
+      "type": "string",
+      "description": "Author or team name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Short description of what this mod adds or changes"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["character", "stage", "gameplay"],
+      "description": "Type of content this mod provides"
+    },
+    "godot_version": {
+      "type": "string",
+      "description": "Minimum Godot engine version required (e.g., 4.1)"
+    },
+    "game_version": {
+      "type": "string",
+      "description": "Minimum game version required (e.g., 0.1.0)"
+    },
+    "files": {
+      "type": "object",
+      "description": "Paths to mod files, relative to the mod directory",
+      "properties": {
+        "data": {
+          "type": "string",
+          "description": "Path to JSON data file (character.json or stage.json)"
+        },
+        "scene": {
+          "type": "string",
+          "description": "Path to scene file (.tscn), optional"
+        },
+        "script": {
+          "type": "string",
+          "description": "Path to GDScript file (.gd), optional"
+        }
+      },
+      "required": ["data"]
+    }
+  },
+  "required": ["mod_id", "name", "version", "author", "description", "type", "game_version", "files"]
+}

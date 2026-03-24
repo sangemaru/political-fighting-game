@@ -151,4 +151,4 @@ func _serialize_event(event: InputEvent) -> Dictionary:
 	return data
 
 func _on_back_pressed():
-	SceneManager.load_scene("res://game/scenes/menus/options_menu.tscn")
+	SceneManager.goto_scene("res://game/scenes/menus/options_menu.tscn")

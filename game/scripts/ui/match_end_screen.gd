@@ -37,8 +37,13 @@ func _ready() -> void:
 
 
 ## Called when match ends
-func _on_match_ended(winner: String) -> void:
-	show_screen(winner)
+func _on_match_ended(winner_id: int) -> void:
+	var name := "DRAW"
+	if winner_id == 1:
+		name = "Player 1"
+	elif winner_id == 2:
+		name = "Player 2"
+	show_screen(name)
 
 
 ## Show the match end screen

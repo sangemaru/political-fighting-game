@@ -110,10 +110,40 @@ jobs:
           name: linux-build
           path: builds/linux/
 
+  export-macos:
+    name: macOS Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Setup Godot Export Templates
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+
+      - name: Create builds directory
+        run: mkdir -v -p builds/macos
+
+      - name: Build macOS
+        run: |
+          cd game
+          godot --headless --verbose --export-release "macOS" ../builds/macos/${EXPORT_NAME}.zip
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: builds/macos/
+
   deploy-itch:
     name: Deploy to itch.io
     runs-on: ubuntu-latest
-    needs: export-web
+    needs: [export-web, export-windows, export-linux, export-macos]
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     steps:
       - name: Download Web Artifact
@@ -121,6 +151,24 @@ jobs:
         with:
           name: web-build
           path: builds/web
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          path: builds/windows
+
+      - name: Download Linux Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-build
+          path: builds/linux
+
+      - name: Download macOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-build
+          path: builds/macos
 
       - name: Install Butler
         run: |
@@ -139,6 +187,10 @@ jobs:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
           # TODO: Replace 'username/game-name' with your actual itch.io username and game slug
-          # Example: ./butler push builds/web/ blackthorne/political-fighting-game:web --userversion ${{ github.sha }}
+          # Example:
+          # ./butler push builds/web/ blackthorne/political-fighting-game:web --userversion ${{ github.sha }}
+          # ./butler push builds/windows/ blackthorne/political-fighting-game:windows --userversion ${{ github.sha }}
+          # ./butler push builds/linux/ blackthorne/political-fighting-game:linux --userversion ${{ github.sha }}
+          # ./butler push builds/macos/ blackthorne/political-fighting-game:macos --userversion ${{ github.sha }}
           echo "itch.io deployment not configured yet. See itch/embed_settings.md for setup instructions."
           echo "To enable: Replace username/game-name in this workflow and add BUTLER_API_KEY to GitHub secrets."

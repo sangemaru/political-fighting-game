@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://dq7wjhcpxe8gd"]
 
-[ext_resource type="Script" path="res://game/scripts/ui/round_end_overlay.gd"]
+[ext_resource type="Script" path="res://game/scripts/ui/round_end_overlay.gd" id="1_reover"]
 
 [node name="RoundEndOverlay" type="CanvasLayer"]
 layer = 10
-script = ExtResource("Script_RoundEndOverlay")
+script = ExtResource("1_reover")
 
 [node name="Panel" type="Panel" parent="."]
 anchor_left = 0.0

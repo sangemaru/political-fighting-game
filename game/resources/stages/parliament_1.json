@@ -1,0 +1,29 @@
+{
+  "id": "parliament_1",
+  "name": "The Parliament",
+  "description": "A grand government building interior with elevated podiums on each side. The wide floor gives fighters room to maneuver, while the raised platforms offer tactical high ground.",
+  "boundaries": {
+    "left": 30,
+    "right": 1250,
+    "top": 0,
+    "bottom": 650
+  },
+  "spawn_points": {
+    "player_1": {
+      "x": 300,
+      "y": 650
+    },
+    "player_2": {
+      "x": 980,
+      "y": 650
+    }
+  },
+  "camera": {
+    "enabled": false,
+    "limit_left": 0,
+    "limit_right": 1280,
+    "limit_top": 0,
+    "limit_bottom": 720
+  },
+  "hazards": []
+}

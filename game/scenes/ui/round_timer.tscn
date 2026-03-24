@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://7pjt5r3p5r72"]
 
-[ext_resource type="Script" path="res://game/scripts/ui/round_timer.gd"]
+[ext_resource type="Script" path="res://game/scripts/ui/round_timer.gd" id="1_rtimer"]
 
 [node name="RoundTimer" type="Control"]
 layout_mode = 1
@@ -10,7 +10,7 @@ anchors_right = 1.0
 anchors_bottom = 0.15
 offset_top = 20.0
 offset_bottom = -20.0
-script = ExtResource("Script_RoundTimer")
+script = ExtResource("1_rtimer")
 
 [node name="WarningPanel" type="Panel" parent="."]
 layout_mode = 1

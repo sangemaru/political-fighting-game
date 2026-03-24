@@ -1,0 +1,62 @@
+{
+  "id": "oligarch_1",
+  "name": "The Oligarch",
+  "description": "A wealthy business tycoon and corrupt billionaire who buys his way through everything. High defense and health make him a wall, but his sluggish speed leaves him vulnerable to fast opponents. Relies on devastating power moves and counter-play.",
+  "base_stats": {
+    "health": 110,
+    "speed": 160,
+    "weight": 1.4,
+    "attack_power": 1.1,
+    "defense": 1.3
+  },
+  "moves": [
+    {
+      "id": "light_attack",
+      "name": "Golden Handshake",
+      "input": "ATTACK",
+      "damage": 7,
+      "startup_frames": 4,
+      "active_frames": 3,
+      "recovery_frames": 6,
+      "knockback": 40,
+      "hitbox": {
+        "offset_x": 25,
+        "offset_y": -5,
+        "width": 45,
+        "height": 35
+      }
+    },
+    {
+      "id": "heavy_attack",
+      "name": "Market Crash",
+      "input": "DOWN + ATTACK",
+      "damage": 18,
+      "startup_frames": 10,
+      "active_frames": 4,
+      "recovery_frames": 14,
+      "knockback": 200,
+      "hitbox": {
+        "offset_x": 0,
+        "offset_y": -10,
+        "width": 80,
+        "height": 80
+      }
+    },
+    {
+      "id": "special",
+      "name": "Bailout",
+      "input": "DOWN, DOWN + ATTACK",
+      "damage": 10,
+      "startup_frames": 6,
+      "active_frames": 4,
+      "recovery_frames": 18,
+      "knockback": 120,
+      "hitbox": {
+        "offset_x": 15,
+        "offset_y": 0,
+        "width": 70,
+        "height": 60
+      }
+    }
+  ]
+}

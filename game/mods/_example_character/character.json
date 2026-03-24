@@ -1,0 +1,62 @@
+{
+  "id": "lobbyist_1",
+  "name": "The Lobbyist",
+  "description": "A slick corporate lobbyist who weaponizes campaign contributions and regulatory loopholes. Fast and tricky, but fragile when cornered.",
+  "base_stats": {
+    "health": 85,
+    "speed": 220,
+    "weight": 0.8,
+    "attack_power": 0.9,
+    "defense": 0.7
+  },
+  "moves": [
+    {
+      "id": "light_attack",
+      "name": "Briefcase Swing",
+      "input": "ATTACK",
+      "damage": 6,
+      "startup_frames": 2,
+      "active_frames": 3,
+      "recovery_frames": 4,
+      "knockback": 40,
+      "hitbox": {
+        "offset_x": 25,
+        "offset_y": -5,
+        "width": 35,
+        "height": 25
+      }
+    },
+    {
+      "id": "heavy_attack",
+      "name": "Cash Splash",
+      "input": "DOWN + ATTACK",
+      "damage": 12,
+      "startup_frames": 6,
+      "active_frames": 4,
+      "recovery_frames": 10,
+      "knockback": 150,
+      "hitbox": {
+        "offset_x": 15,
+        "offset_y": -15,
+        "width": 55,
+        "height": 50
+      }
+    },
+    {
+      "id": "special",
+      "name": "Filibuster",
+      "input": "DOWN, DOWN + ATTACK",
+      "damage": 3,
+      "startup_frames": 12,
+      "active_frames": 8,
+      "recovery_frames": 18,
+      "knockback": 250,
+      "hitbox": {
+        "offset_x": 0,
+        "offset_y": -10,
+        "width": 100,
+        "height": 80
+      }
+    }
+  ]
+}

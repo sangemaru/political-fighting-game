@@ -29,6 +29,9 @@ func _set_defaults() -> void:
 	config.set_value("game", "round_time", 99)
 	config.set_value("game", "rounds_to_win", 2)
 
+	# Privacy defaults (F84)
+	config.set_value("privacy", "analytics_enabled", false)
+
 	save_settings()
 
 func _apply_settings() -> void:

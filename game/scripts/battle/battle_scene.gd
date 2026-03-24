@@ -128,16 +128,13 @@ func _setup_scene_hierarchy() -> void:
 	"""Setup the battle scene tree structure"""
 	# Main root (this node) is already setup as Node2D
 	self.name = "Battle"
-
-	# Create Fighters container node
-	var fighters_node = Node2D.new()
-	fighters_node.name = "Fighters"
-	add_child(fighters_node)
+	# Fighters node already exists in the .tscn scene tree
 
 
 func _setup_stage() -> void:
 	"""Load and initialize the stage"""
-	var stage_id = battle_config.get("stage", "arena_1")
+	# Prefer GameManager selection over config file default (F45)
+	var stage_id = GameManager.selected_stage if GameManager.selected_stage != "" else battle_config.get("stage", "arena_1")
 	var stage_scene_path = "res://game/scenes/stages/%s.tscn" % stage_id
 
 	# Load stage scene
@@ -370,7 +367,10 @@ func _spawn_player(player_id: int, parent_node: Node2D) -> bool:
 		return false
 
 	var player_config = player_configs[player_key]
-	var character_id = player_config.get("character", "")
+
+	# Prefer GameManager selection over config file defaults (F44)
+	var gm_character = GameManager.selected_characters.get(player_id, "")
+	var character_id = gm_character if gm_character != "" else player_config.get("character", "")
 	var spawn_point_key = player_config.get("spawn_point", player_key)
 
 	if character_id.is_empty():
@@ -493,86 +493,34 @@ func _on_player_died(player_id: int) -> void:
 ## ============================================================================
 
 func _route_player_inputs() -> void:
-	"""Route InputManager signals to the correct player's fighter"""
+	"""Route per-player input to fighter state machines via set_input()"""
 
-	# Player 1 movement input
-	if Input.is_action_pressed("p1_move_left"):
-		_handle_player_input(1, "move_left")
-	elif Input.is_action_pressed("p1_move_right"):
-		_handle_player_input(1, "move_right")
+	for player_id in fighters:
+		var fighter = fighters[player_id]
+		if not fighter.is_alive:
+			fighter.state_machine.clear_input()
+			continue
 
-	if Input.is_action_pressed("p1_move_up"):
-		_handle_player_input(1, "move_up")
-	elif Input.is_action_pressed("p1_move_down"):
-		_handle_player_input(1, "move_down")
+		var prefix = "p%d_" % player_id
 
-	# Player 1 attack input
-	if Input.is_action_just_pressed("p1_attack"):
-		_handle_player_input(1, "attack")
+		# Build movement direction
+		var direction: float = 0.0
+		if Input.is_action_pressed(prefix + "move_left"):
+			direction -= 1.0
+		if Input.is_action_pressed(prefix + "move_right"):
+			direction += 1.0
 
-	if Input.is_action_just_pressed("p1_special"):
-		_handle_player_input(1, "special")
+		var vertical: float = 0.0
+		if Input.is_action_pressed(prefix + "move_up"):
+			vertical -= 1.0  # Up is negative in Godot
+		if Input.is_action_pressed(prefix + "move_down"):
+			vertical += 1.0
 
-	# Player 2 movement input
-	if Input.is_action_pressed("p2_move_left"):
-		_handle_player_input(2, "move_left")
-	elif Input.is_action_pressed("p2_move_right"):
-		_handle_player_input(2, "move_right")
+		var attack = Input.is_action_just_pressed(prefix + "attack")
+		var special = Input.is_action_just_pressed(prefix + "special")
 
-	if Input.is_action_pressed("p2_move_up"):
-		_handle_player_input(2, "move_up")
-	elif Input.is_action_pressed("p2_move_down"):
-		_handle_player_input(2, "move_down")
-
-	# Player 2 attack input
-	if Input.is_action_just_pressed("p2_attack"):
-		_handle_player_input(2, "attack")
-
-	if Input.is_action_just_pressed("p2_special"):
-		_handle_player_input(2, "special")
-
-
-func _handle_player_input(player_id: int, action: String) -> void:
-	"""Handle input for a specific player"""
-
-	if not fighters.has(player_id):
-		return
-
-	var fighter = fighters[player_id]
-
-	# Only process input if fighter is alive and in IDLE state
-	if not fighter.is_alive or fighter.state_machine.current_state != FighterStateMachine.State.IDLE:
-		return
-
-	match action:
-		"move_left":
-			fighter.facing_direction = -1
-			fighter.state_machine.change_state(FighterStateMachine.State.WALKING)
-			fighter.velocity.x = -fighter.speed
-
-		"move_right":
-			fighter.facing_direction = 1
-			fighter.state_machine.change_state(FighterStateMachine.State.WALKING)
-			fighter.velocity.x = fighter.speed
-
-		"move_up":
-			# Jump logic - only if on ground
-			if fighter.is_on_floor():
-				fighter.state_machine.change_state(FighterStateMachine.State.JUMPING)
-				var jump_force = sqrt(2.0 * fighter.gravity * fighter.jump_height)
-				fighter.velocity.y = -jump_force
-
-		"move_down":
-			# Crouch or ground movement
-			fighter.velocity.y += fighter.gravity * 0.1
-
-		"attack":
-			# Light attack - delegates to character-specific implementation
-			fighter.state_machine.change_state(FighterStateMachine.State.ATTACKING)
-
-		"special":
-			# Special move - delegates to character-specific implementation
-			fighter.state_machine.change_state(FighterStateMachine.State.ATTACKING)
+		# Push input to the fighter's state machine (handles all states)
+		fighter.state_machine.set_input(direction, vertical, attack, special)
 
 
 ## ============================================================================

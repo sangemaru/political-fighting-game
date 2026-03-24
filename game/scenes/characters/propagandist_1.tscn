@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5xn7w2p8k3f9"]
+
+[ext_resource type="Script" path="res://game/scripts/characters/propagandist_1.gd" id="1_p9r2m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_propagandist"]
+size = Vector2(50, 75)
+
+[node name="Propagandist1" type="CharacterBody2D"]
+script = ExtResource("1_p9r2m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 0)
+scale = Vector2(1.4, 1.9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_propagandist")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

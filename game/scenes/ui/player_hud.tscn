@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://brqd0s2k5h8db"]
+[gd_scene load_steps=3 format=3 uid="uid://brqd0s2k5h8db"]
 
-[ext_resource type="Script" path="res://game/scripts/ui/player_hud.gd"]
+[ext_resource type="Script" path="res://game/scripts/ui/player_hud.gd" id="1_phud"]
+[ext_resource type="Script" path="res://game/scripts/ui/health_bar.gd" id="2_hbar"]
 
 [node name="PlayerHUD" type="Control"]
 layout_mode = 1
@@ -12,7 +13,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = -10.0
 offset_bottom = -10.0
-script = ExtResource("Script_PlayerHUD")
+script = ExtResource("1_phud")
 
 [node name="PortraitPlaceholder" type="Panel" parent="."]
 layout_mode = 0
@@ -40,7 +41,7 @@ vertical_alignment = 0
 [node name="HealthBar" type="Control" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-script = SubResource("Script_HealthBar")
+script = ExtResource("2_hbar")
 
 [node name="HealthBarBG" type="Panel" parent="VBoxContainer/HealthBar"]
 layout_mode = 1

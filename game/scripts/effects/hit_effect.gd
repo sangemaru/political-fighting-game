@@ -43,7 +43,7 @@ func set_damage_color(damage: float) -> void:
 
 ## Spawn hit effect at position
 static func spawn_at(scene_root: Node, pos: Vector2, damage: float = 10.0) -> HitEffect:
-	var effect_scene = preload("res://scenes/effects/hit_effect.tscn")
+	var effect_scene = preload("res://game/scenes/effects/hit_effect.tscn")
 	var effect = effect_scene.instantiate() as HitEffect
 	scene_root.add_child(effect)
 	effect.global_position = pos

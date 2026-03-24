@@ -1,0 +1,13 @@
+{
+  "mod_id": "example_lobbyist",
+  "name": "The Lobbyist",
+  "version": "1.0.0",
+  "author": "Example Modder",
+  "description": "A corporate lobbyist who fights with briefcases full of cash and regulatory paperwork.",
+  "type": "character",
+  "godot_version": "4.1",
+  "game_version": "0.1.0",
+  "files": {
+    "data": "character.json"
+  }
+}

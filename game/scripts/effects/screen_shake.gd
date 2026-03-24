@@ -16,6 +16,9 @@ var camera: Camera2D = null
 ## Original camera offset
 var original_offset: Vector2 = Vector2.ZERO
 
+## Deterministic frame counter for oscillation pattern
+var _shake_frame: int = 0
+
 func _ready() -> void:
 	# Get parent Camera2D
 	if get_parent() is Camera2D:
@@ -29,11 +32,11 @@ func _process(delta: float) -> void:
 		return
 
 	if shake_amount > 0:
-		# Apply random offset
-		camera.offset = original_offset + Vector2(
-			randf_range(-1, 1),
-			randf_range(-1, 1)
-		) * shake_amount
+		_shake_frame += 1
+		# Deterministic oscillation using sin/cos with frame counter
+		var offset_x = sin(_shake_frame * 7.0) * cos(_shake_frame * 13.0)
+		var offset_y = cos(_shake_frame * 11.0) * sin(_shake_frame * 5.0)
+		camera.offset = original_offset + Vector2(offset_x, offset_y) * shake_amount
 
 		# Decay shake
 		shake_amount = lerp(shake_amount, 0.0, shake_decay * delta)
@@ -41,6 +44,7 @@ func _process(delta: float) -> void:
 		# Clamp to zero when very small
 		if shake_amount < 0.01:
 			shake_amount = 0.0
+			_shake_frame = 0
 			camera.offset = original_offset
 	else:
 		# Ensure offset is reset

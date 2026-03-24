@@ -1,27 +1,27 @@
 [gd_scene load_steps=6 format=3 uid="uid://c3xxcwkh8ot1l5"]
 
-[ext_resource type="Script" path="res://game/scripts/ui/battle_hud_manager.gd"]
-[ext_resource type="PackedScene" uid="uid://brqd0s2k5h8db" path="res://game/scenes/ui/player_hud.tscn"]
-[ext_resource type="PackedScene" uid="uid://7pjt5r3p5r72" path="res://game/scenes/ui/round_timer.tscn"]
-[ext_resource type="PackedScene" uid="uid://dq7wjhcpxe8gd" path="res://game/scenes/ui/round_end_overlay.tscn"]
-[ext_resource type="PackedScene" uid="uid://bv8lxo3sshd4" path="res://game/scenes/ui/match_end_screen.tscn"]
+[ext_resource type="Script" path="res://game/scripts/ui/battle_hud_manager.gd" id="1_bhud"]
+[ext_resource type="PackedScene" uid="uid://brqd0s2k5h8db" path="res://game/scenes/ui/player_hud.tscn" id="2_phud"]
+[ext_resource type="PackedScene" uid="uid://7pjt5r3p5r72" path="res://game/scenes/ui/round_timer.tscn" id="3_rtimer"]
+[ext_resource type="PackedScene" uid="uid://dq7wjhcpxe8gd" path="res://game/scenes/ui/round_end_overlay.tscn" id="4_reover"]
+[ext_resource type="PackedScene" uid="uid://bv8lxo3sshd4" path="res://game/scenes/ui/match_end_screen.tscn" id="5_mend"]
 
 [node name="BattleHUD" type="CanvasLayer"]
 layer = 1
-script = ExtResource("Script_BattleHUDManager")
+script = ExtResource("1_bhud")
 p1_fighter_path = ""
 p2_fighter_path = ""
 
-[node name="P1HUD" parent="." instance=ExtResource("PackedScene_P1HUD")]
+[node name="P1HUD" parent="." instance=ExtResource("2_phud")]
 player_id = 1
 character_name = "Player 1"
 
-[node name="P2HUD" parent="." instance=ExtResource("PackedScene_P2HUD")]
+[node name="P2HUD" parent="." instance=ExtResource("2_phud")]
 player_id = 2
 character_name = "Player 2"
 
-[node name="RoundTimer" parent="." instance=ExtResource("PackedScene_RoundTimer")]
+[node name="RoundTimer" parent="." instance=ExtResource("3_rtimer")]
 
-[node name="RoundEndOverlay" parent="." instance=ExtResource("PackedScene_RoundEndOverlay")]
+[node name="RoundEndOverlay" parent="." instance=ExtResource("4_reover")]
 
-[node name="MatchEndScreen" parent="." instance=ExtResource("PackedScene_MatchEndScreen")]
+[node name="MatchEndScreen" parent="." instance=ExtResource("5_mend")]

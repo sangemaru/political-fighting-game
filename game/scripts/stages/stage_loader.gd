@@ -7,10 +7,12 @@ class_name StageLoader
 
 ## Preload available stages
 const STAGES = {
-	"arena_1": "res://scenes/stages/arena_1.tscn"
+	"arena_1": "res://game/scenes/stages/arena_1.tscn",
+	"parliament_1": "res://game/scenes/stages/parliament_1.tscn",
+	"rally_1": "res://game/scenes/stages/rally_1.tscn"
 }
 
-const STAGE_DATA_PATH = "res://resources/stages/"
+const STAGE_DATA_PATH = "res://game/resources/stages/"
 
 
 ## Load a stage by ID

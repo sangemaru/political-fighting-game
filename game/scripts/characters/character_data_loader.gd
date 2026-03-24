@@ -185,12 +185,12 @@ func _validate_move_data(move: Dictionary) -> bool:
 
 ## Helper: Check if value is positive
 func _is_positive(value) -> bool:
-	return value is int or value is float and value > 0
+	return (value is int or value is float) and value > 0
 
 
 ## Helper: Check if value is in range
 func _in_range(value, min_val: float, max_val: float) -> bool:
-	return value is int or value is float and value >= min_val and value <= max_val
+	return (value is int or value is float) and value >= min_val and value <= max_val
 
 
 ## Get file path for character JSON
